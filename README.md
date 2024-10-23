@@ -3,6 +3,13 @@
 </div>
 
 WIP
+### Screenshots
+<details>
+  <summary>View screens</summary>
+  <img src="https://i.imgur.com/QMXUBdY.png" alt="first screen" width="700"/>
+  <img src="https://i.imgur.com/qaDk3Qp.png" alt="second screen" width="400"/>
+</details>
+
 
 Simplify the lives of movie fans
 ### Technologies
@@ -48,7 +55,7 @@ cmake ..
 ```
 Keencloo-Cinema\build\Release\videos\
 ```
-## Roadmap
+## Features
 - [x] Red and Blue player models
 - [x] The close, minimize, and full screen buttons are in the upper right corner
 - [x] The "close" button should be red when pointing
@@ -70,4 +77,5 @@ Keencloo-Cinema\build\Release\videos\
 - [ ] When clicked, this video opens
 - [ ] Settings window
 - [ ] Drag and drop video in video player
+
 and more..
