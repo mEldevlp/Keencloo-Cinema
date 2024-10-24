@@ -38,8 +38,8 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 		video.resolution = QString::number(metadata.frame_data.resolution.width) + "x" + QString::number(metadata.frame_data.resolution.height);
 
 		long long duration = metadata.duration / 1000000ll;
-		QTime total_time((duration / 3600) % 60, (duration / 60) % 60, duration % 60, (duration * 1000) % 1000);
-		video.duration = total_time.toString((duration > 3600) ? "hh:mm:ss" : "mm:ss");
+		QTime total_time((duration / 3600ll) % 60, (duration / 60ll) % 60ll, duration % 60ll, (duration * 1000) % 1000);
+		video.duration = total_time.toString((duration > 3600ll) ? "hh:mm:ss" : "mm:ss");
 
 		static auto cut_bit_rate = [](long long bit) -> QString {
 			long long divider = 1;

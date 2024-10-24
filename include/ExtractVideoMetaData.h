@@ -19,10 +19,10 @@ struct MetaDataVideo
 {
 	std::string file_name;
 	const char* file_path;
-	long long duration;
-	long long video_bit_rate;
-	long long audio_bit_rate;
-	long long file_size;
+	int64_t duration;
+	int64_t video_bit_rate;
+	int64_t audio_bit_rate;
+	int64_t file_size;
 	double fps;
 	VideoFrame frame_data;
 };

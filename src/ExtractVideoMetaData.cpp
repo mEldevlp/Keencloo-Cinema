@@ -2,7 +2,6 @@
 
 MetaDataVideo extract_video_metadata(const char* file)
 {
-    
     MetaDataVideo metadata;
 
     // Open the video file
@@ -23,7 +22,7 @@ MetaDataVideo extract_video_metadata(const char* file)
     int videoStreamIndex = -1;
     int audioStreamIndex = -1;
 
-    unsigned int stream = 0;
+    uint32_t stream = 0;
     while ((audioStreamIndex == -1 && videoStreamIndex == -1) || (stream < formatContext->nb_streams))
     {
         switch (formatContext->streams[stream]->codecpar->codec_type)

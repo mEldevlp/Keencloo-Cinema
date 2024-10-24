@@ -6,7 +6,7 @@ void BaseUI::setup_ui(QWidget* parent)
 
     iconLabel = new QLabel(centralWidget); // logo
     
-    QPixmap iconPixmap(QString("C:\\Users\\kondr\\source\\repos\\Keencloo\\Keencloo\\rsc\\logo_full.png"));
+    QPixmap iconPixmap(QString(QCoreApplication::applicationDirPath() + "/rsc/logo_full.png"));
 
     iconLabel->setPixmap(iconPixmap.scaled(120, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
@@ -70,8 +70,7 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    setWindowIcon(QIcon("C:\\Users\\kondr\\source\\repos\\Keencloo\\Keencloo\\rsc\\logo_minimal.png"));
-
+    setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/rsc/logo_minimal.png"));
 
     connect(ui->closeButton, &QPushButton::clicked, this, &BaseDesignWindow::close);
     connect(ui->fullscreenButton, &QPushButton::clicked, this, &BaseDesignWindow::showMaximized);

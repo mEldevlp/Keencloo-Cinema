@@ -1,8 +1,10 @@
 <div align="center">
 <h3><img src="rsc/logo_git.png" alt="logo" width="275"></h3>
 </div>
-
 WIP
+
+Simplify the lives of movie fans
+
 ### Screenshots
 <details>
   <summary>View screens</summary>
@@ -10,8 +12,6 @@ WIP
   <img src="https://i.imgur.com/qaDk3Qp.png" alt="second screen" width="400"/>
 </details>
 
-
-Simplify the lives of movie fans
 ### Technologies
 - **[Qt](https://www.qt.io/download-dev)**: Version 6.7.2 or higher.
 - **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: build n7.1 
@@ -56,7 +56,6 @@ cmake ..
 Keencloo-Cinema\build\Release\videos\
 ```
 ## Features
-- [x] Red and Blue player models
 - [x] The close, minimize, and full screen buttons are in the upper right corner
 - [x] The "close" button should be red when pointing
 - [x] There should be a logo in the middle of the window
