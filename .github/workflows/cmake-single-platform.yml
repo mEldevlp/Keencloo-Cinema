@@ -22,12 +22,7 @@ jobs:
         run: |
           choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
           choco install	qt6-base-dev -y
-
-      #- name: Set Qt environment variables
-        #run: |
-          #$qtPath = (Get-ChildItem "C:\Qt\6.4.2\mingw_64" | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
-          #echo "QTDIR=$qtPath" >> $GITHUB_ENV
-          #echo "$qtPath\bin" >> $env:GITHUB_PATH
+          choco install	libqt6widgets6 -y
 
       - name: Configure CMake
         run: |
