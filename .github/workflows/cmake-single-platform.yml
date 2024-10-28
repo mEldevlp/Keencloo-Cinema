@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
-          choco install qt6-sdk -y
+          choco install qt6-base-dev -y
 
       - name: Set Qt environment variables
         run: |
