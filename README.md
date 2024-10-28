@@ -13,6 +13,7 @@ Simplify the lives of movie fans
 </details>
 
 ### Technologies
+- **[MSVC](https://visualstudio.microsoft.com/ru)**: Visual Studio 2022
 - **[Qt](https://www.qt.io/download-dev)**: Version 6.7.2 or higher.
 - **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: build n7.1 
 - **[RapidJSON](https://rapidjson.org/)**: _(soon in project)_
