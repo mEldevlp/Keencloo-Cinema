@@ -27,7 +27,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           mkdir libs
-          choco install ffmpeg-shared --install-arguments="'INSTALLDIR=./libs/'"
+          choco install ffmpeg-shared --install-arguments="'/DIR=D:\a\Keencloo-Cinema\Keencloo-Cinema\libs'"
           cd libs
           ren "ffmpeg-shared" "ffmpeg"
           
