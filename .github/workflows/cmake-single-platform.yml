@@ -21,8 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
-          choco install	qt6-base-dev -y
-          choco install	qt6-multimedia-dev -y
+          choco install qt6-base-dev --params "'/modules:qtmultimedia'"
 
       - name: Configure CMake
         run: |
