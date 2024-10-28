@@ -62,6 +62,8 @@ endif()
 target_include_directories(Keencloo PRIVATE ${INCLUDE_DIR})
 target_include_directories(Keencloo PRIVATE ${SOURCE_DIR})
 
+target_compile_options(qt_cmake PUBLIC "/Zc:__cplusplus")
+
 # Link Qt & FFmpeg
 target_link_libraries(Keencloo PRIVATE
     Qt6::Core
@@ -77,6 +79,7 @@ target_link_libraries(Keencloo PRIVATE
     ${FFMPEG_LIB_SWRESAMPLE}
     ${FFMPEG_LIB_SWSCALE}
 )
+
 
 # Copy DLL file into dir with execute file (win only)
 if(WIN32)
