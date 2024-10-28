@@ -26,12 +26,12 @@ jobs:
       - name: Set Qt environment variables
         run: |
           $qtPath = (Get-ChildItem "C:\Qt\6.4.2\mingw_64" | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
-          echo "QT_PATH=$qtPath" >> $GITHUB_ENV
+          echo "QTDIR=$qtPath" >> $GITHUB_ENV
           echo "$qtPath\bin" >> $env:GITHUB_PATH
 
       - name: Configure CMake
         run: |
-          cmake -S . -B build -DCMAKE_PREFIX_PATH="$env:QT_PATH"
+          cmake -S . -B build -DCMAKE_PREFIX_PATH="$env:QTDIR"
 
       - name: Build
         run: |
