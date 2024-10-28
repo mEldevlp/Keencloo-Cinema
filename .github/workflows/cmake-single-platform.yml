@@ -25,7 +25,7 @@ jobs:
 
       - name: Set Qt environment variables
         run: |
-          $qtPath = (Get-ChildItem "C:\Qt\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
+          $qtPath = (Get-ChildItem "C:\Qt\6.4.2\mingw_64" | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName
           echo "QT_PATH=$qtPath" >> $GITHUB_ENV
           echo "$qtPath\bin" >> $env:GITHUB_PATH
 
