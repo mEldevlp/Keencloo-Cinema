@@ -18,18 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Qt6
-        run: |
-          choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
-          choco install qt6-base-dev --params "'/modules:qtmultimedia'"
-          
       - name: Install FFmpeg
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          mkdir libs
-          choco install ffmpeg-shared --install-arguments="'/DIR=D:\a\Keencloo-Cinema\Keencloo-Cinema\libs'"
-          cd libs
-          ren "ffmpeg-shared" "ffmpeg"
+          mkdir libs/ffmpeg
+          choco install ffmpeg-shared -y
+          Move-Item -Path "C:\ProgramData\chocolatey\lib\ffmpeg-shared\tools\ffmpeg-7.1-full_build-shared\*" -Destination ".\libs\ffmpeg"
+
+      - name: Install Qt6
+        run: |
+          choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
+          choco install qt6-base-dev --params "'/modules:qtmultimedia'" -y
           
       - name: Configure CMake
         run: |
