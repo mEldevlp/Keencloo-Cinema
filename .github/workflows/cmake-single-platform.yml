@@ -22,7 +22,7 @@ jobs:
         run: |
           choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
           choco install	qt6-base-dev -y
-          choco install	libqt6widgets6 -y
+          choco install	qt6-multimedia-dev -y
 
       - name: Configure CMake
         run: |
