@@ -18,11 +18,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Install Qt6
         run: |
           choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
           choco install qt6-base-dev --params "'/modules:qtmultimedia'"
-
+          
+      - name: Install FFmpeg
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          mkdir libs
+          choco install ffmpeg-shared --install-arguments="'/DIR=libs'"
+          cd libs
+          ren "ffmpeg-shared" "ffmpeg"
+          
       - name: Configure CMake
         run: |
           cmake -S . -B build -DCMAKE_PREFIX_PATH="C:\Qt\6.4.2\mingw_64\lib\cmake"
