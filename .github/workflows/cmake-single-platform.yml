@@ -1,0 +1,35 @@
+name: Windows CMake
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install FFmpeg
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          mkdir libs/ffmpeg
+          choco install ffmpeg-shared -y
+          Move-Item -Path "C:\ProgramData\chocolatey\lib\ffmpeg-shared\tools\ffmpeg-7.1-full_build-shared\*" -Destination ".\libs\ffmpeg"
+
+      - name: Install Qt6
+        run: |
+          choco install cmake --installargs '"ADD_CMAKE_TO_PATH=System"' -y
+          choco install qt6-base-dev --params "'/modules:qtmultimedia'" -y
+          
+      - name: Configure CMake
+        run: |
+          cmake -S . -B build -DCMAKE_CXX_STANDARD=17 -DCMAKE_PREFIX_PATH="C:\Qt\6.4.2\mingw_64\lib\cmake"
