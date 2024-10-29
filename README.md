@@ -50,6 +50,11 @@ cd ../
 mkdir build
 cd .\build\
 cmake ..
+cd ../
+```
+Build
+```
+cmake --build build --config RelWithDebInfo # or Release
 ```
 
 #### For debug videos use folder:
