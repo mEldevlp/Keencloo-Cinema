@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-if(WIN32)
-    project(Keencloo LANGUAGES CXX)
-elseif(UNIX)
-    project(Keencloo)
-endif()
+project(Keencloo LANGUAGES CXX)
 
 set(CMAKE_CONFIGURATION_TYPES "Release;RelWithDebInfo" CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 17)
@@ -48,19 +44,34 @@ file(GLOB_RECURSE SOURCES
     "${SOURCE_DIR}/*.cpp"
 )
 
+add_library(LIB_KEENCLOO STATIC ${SOURCES})
+target_include_directories(LIB_KEENCLOO PUBLIC ${INCLUDE_DIR})
+
+
+add_executable(Keencloo WIN32 ${SOURCES})
+
 # Install compile Qt
 set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS
     $<$<CONFIG:RELWITHDEBINFO>:QT_MESSAGELOGCONTEXT>
 )
 
-if(WIN32)
-    add_executable(Keencloo WIN32 ${SOURCES})
-elseif(UNIX)
-    add_executable(Keencloo ${SOURCES})
-endif()
+target_include_directories(Keencloo PUBLIC ${INCLUDE_DIR})
+target_include_directories(Keencloo PUBLIC ${SOURCE_DIR})
 
-target_include_directories(Keencloo PRIVATE ${INCLUDE_DIR})
-target_include_directories(Keencloo PRIVATE ${SOURCE_DIR})
+target_link_libraries(LIB_KEENCLOO PRIVATE
+    Qt6::Core
+    Qt6::Widgets
+    Qt6::Multimedia
+    Qt6::MultimediaWidgets
+    ${FFMPEG_LIB_AVCODEC}
+    ${FFMPEG_LIB_AVDEVICE}
+    ${FFMPEG_LIB_AVFILTER}
+    ${FFMPEG_LIB_AVFORMAT}
+    ${FFMPEG_LIB_AVUTIL}
+    ${FFMPEG_LIB_POSTPROC}
+    ${FFMPEG_LIB_SWRESAMPLE}
+    ${FFMPEG_LIB_SWSCALE}
+)
 
 # Link Qt & FFmpeg
 target_link_libraries(Keencloo PRIVATE
@@ -77,6 +88,9 @@ target_link_libraries(Keencloo PRIVATE
     ${FFMPEG_LIB_SWRESAMPLE}
     ${FFMPEG_LIB_SWSCALE}
 )
+
+# Unit tests for Keencloo
+add_subdirectory(unit_tests)
 
 # Copy DLL file into dir with execute file (win only)
 if(WIN32)
@@ -108,3 +122,6 @@ if(WIN32)
 		"$<TARGET_FILE_DIR:Keencloo>/rsc"
     )
 endif()
+
+# Set start-up project as Keencloo but now all_build
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Keencloo)
