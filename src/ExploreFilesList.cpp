@@ -11,66 +11,12 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 	listView->setModel(filesList);
 	listView->setItemDelegate(new QFilesItemDelegate(listView));
 
-	std::vector<QString> file_paths;
 	QDir dir(QCoreApplication::applicationDirPath() + "/videos");
 	QStringList files = dir.entryList(QDir::Files);
 
 	for (const QString& fileName : files)
 	{
-		file_paths.push_back(dir.absoluteFilePath(fileName));
-	}
-
-	for (auto itpath = file_paths.begin(); itpath != file_paths.end(); ++itpath)
-	{
-		MetaDataVideo metadata = extract_video_metadata(itpath->toStdString().c_str());
-
-		VideoFile video;
-
-		// TODO(make a preview icon)
-		video.preview = QImage(metadata.frame_data.data.data(),
-			metadata.frame_data.resolution.width,
-			metadata.frame_data.resolution.height,
-			metadata.frame_data.resolution.width * metadata.frame_data.channels,
-			QImage::Format_RGB888);
-
-		video.filePath = metadata.file_path;
-		video.title = QString::fromStdString(metadata.file_name);
-		video.resolution = QString::number(metadata.frame_data.resolution.width) + "x" + QString::number(metadata.frame_data.resolution.height);
-
-		long long duration = metadata.duration / 1000000ll;
-		QTime total_time((duration / 3600ll) % 60, (duration / 60ll) % 60ll, duration % 60ll, (duration * 1000) % 1000);
-		video.duration = total_time.toString((duration > 3600ll) ? "hh:mm:ss" : "mm:ss");
-
-		static auto cut_bit_rate = [](long long bit) -> QString {
-			long long divider = 1;
-			QString vel = "bps";
-
-			if (bit >= 1000000000ll)
-			{
-				divider = 1000000000ll;
-				vel = " g" + vel;
-			}
-			else if (bit >= 1000000ll)
-			{
-				divider = 1000000ll;
-				vel = " m" + vel;
-			}
-			else if (bit >= 1000ll)
-			{
-				divider = 1000ll;
-				vel = " k" + vel;
-			}
-
-			return QString::number(bit / divider) + vel;
-		};
-
-		video.videoBitRate = cut_bit_rate(metadata.video_bit_rate + 1); // video bitrate 
-		video.audioBitRate = cut_bit_rate(metadata.audio_bit_rate + 1);
-
-		video.fileSize = QString::number(metadata.file_size / (1024 * 1024));
-		video.fps = QString::number(static_cast<int>(metadata.fps));
-
-		filesList->addVideoFile(video);
+		filesList->addVideoFile(dir.absoluteFilePath(fileName).toStdString());
 	}
 
 #pragma region("qss style")
@@ -114,20 +60,19 @@ QListFiles::QListFiles(QObject* parent)
 
 int QListFiles::rowCount(const QModelIndex& parent) const
 {
-	return videoFiles.count();
+	return static_cast<int>(videoFiles.size());
 }
 
 QVariant QListFiles::data(const QModelIndex& index, int role) const
 {
-	if (!index.isValid() || index.row() >= videoFiles.count())
+	if (!index.isValid() || index.row() >= videoFiles.size())
 		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
 		{
-			const VideoFile& video = videoFiles.at(index.row());
-			return QVariant::fromValue(video);
+			return QVariant::fromValue(videoFiles[index.row()]);
 		}
 		default:
 		{
@@ -141,9 +86,9 @@ bool QListFiles::setData(const QModelIndex& index, const QVariant& value, int ro
 	return true;
 }
 
-void QListFiles::addVideoFile(const VideoFile& video)
+void QListFiles::addVideoFile(const std::string& video)
 {
-	videoFiles.append(video);
+	videoFiles.push_back(video);
 }
 
 Qt::ItemFlags QListFiles::flags(const QModelIndex& index) const
@@ -169,19 +114,101 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 {
 	painter->save();
 
-	VideoFile item = index.data(Qt::DisplayRole).value<VideoFile>();
+	std::string path = index.data(Qt::DisplayRole).value<std::string>();
 
-	QRect rect1 = option.rect.adjusted(5, 5, -5, -option.rect.height() / 2);
-	QRect rect2 = rect1;
-	rect2.moveTop(rect2.top() + rect1.height() / 2);
+	MetaDataVideo metadata = extract_video_metadata(path.c_str());
 
-	QRect rect3 = rect1.adjusted(option.rect.width() / 2, 0, 0, 0);
-	QRect rect4 = rect2.adjusted(option.rect.width() / 2, 0, 0, 0);
+	VideoFile video;
 
-	painter->drawText(rect1, Qt::AlignLeft, item.title);
-	painter->drawText(rect2, Qt::AlignLeft, item.resolution);
-	painter->drawText(rect3, Qt::AlignRight, item.duration);
-	painter->drawText(rect4, Qt::AlignRight, item.audioBitRate);
+	// TODO(make a preview icon)
+	video.preview = QImage(metadata.frame_data.data.data(),
+		metadata.frame_data.resolution.width,
+		metadata.frame_data.resolution.height,
+		metadata.frame_data.resolution.width * metadata.frame_data.channels,
+		QImage::Format_RGB888);
+
+	video.filePath = metadata.file_path;
+	video.title = QString::fromStdString(metadata.file_name);
+	video.resolution = QString::number(metadata.frame_data.resolution.width) + "x" + QString::number(metadata.frame_data.resolution.height);
+
+	long long duration = metadata.duration / 1000000ll;
+	QTime total_time((duration / 3600ll) % 60, (duration / 60ll) % 60ll, duration % 60ll, (duration * 1000) % 1000);
+	video.duration = total_time.toString((duration > 3600ll) ? "hh:mm:ss" : "mm:ss");
+
+	static auto cut_bit_rate = [](long long bit) -> QString {
+		long long divider = 1;
+		QString vel = "bps";
+
+		if (bit >= 1000000000ll)
+		{
+			divider = 1000000000ll;
+			vel = " g" + vel;
+		}
+		else if (bit >= 1000000ll)
+		{
+			divider = 1000000ll;
+			vel = " m" + vel;
+		}
+		else if (bit >= 1000ll)
+		{
+			divider = 1000ll;
+			vel = " k" + vel;
+		}
+
+		return QString::number(bit / divider) + vel;
+		};
+
+	video.videoBitRate = cut_bit_rate(metadata.video_bit_rate + 1); // video bitrate 
+	video.audioBitRate = cut_bit_rate(metadata.audio_bit_rate + 1);
+
+	// TODO make div mb gb kb
+	video.fileSize = QString::number(metadata.file_size / (1024 * 1024));
+	video.fps = QString::number(static_cast<int>(metadata.fps));
+
+	// ---------
+
+	// Установим отступы для rect
+	int verticalPadding = 10;  // Отступ сверху и снизу
+	QRect adjustedRect = option.rect.adjusted(9, verticalPadding, -9, -verticalPadding);
+
+	// Определяем квадратный размер для изображения (равен всей высоте)
+	int padding = 5;
+	int imageSize = adjustedRect.height();  // Квадрат по высоте adjustedRect
+	QRect imageRect(adjustedRect.left(), adjustedRect.top(), imageSize, imageSize);
+
+	// Прямоугольники для текста
+	int textAreaWidth = adjustedRect.width() - imageSize - padding;
+	int textAreaLeft = imageRect.right() + padding;
+	int lineHeight = imageRect.height() / 3;
+
+	QRect topTextRect(textAreaLeft, imageRect.top(), textAreaWidth, lineHeight);
+	QRect middleTextRect(textAreaLeft, imageRect.top() + lineHeight, textAreaWidth, lineHeight);
+	QRect bottomTextRect(textAreaLeft, imageRect.top() + 2 * lineHeight, textAreaWidth, lineHeight);
+
+	// Рисуем изображение и текст
+	painter->drawImage(imageRect, video.preview);
+
+	// Форматируем текст и выравниваем правые элементы
+	QString topTextLeft = video.title;
+	QString topTextRight = video.duration;
+
+	QString middleTextLeft = video.resolution;
+	QString middleTextRight = video.audioBitRate;
+
+	QString bottomTextLeft = video.fps + " FPS";
+	QString bottomTextRight = video.fileSize + " MB";
+
+	// Рисуем верхнюю строку (title слева, duration справа)
+	painter->drawText(topTextRect, Qt::AlignLeft | Qt::AlignVCenter, topTextLeft);
+	painter->drawText(topTextRect, Qt::AlignRight | Qt::AlignVCenter, topTextRight);
+
+	// Рисуем среднюю строку (resolution слева, bitrate справа)
+	painter->drawText(middleTextRect, Qt::AlignLeft | Qt::AlignVCenter, middleTextLeft);
+	painter->drawText(middleTextRect, Qt::AlignRight | Qt::AlignVCenter, middleTextRight);
+
+	// Рисуем нижнюю строку (fps слева, filesize справа)
+	painter->drawText(bottomTextRect, Qt::AlignLeft | Qt::AlignVCenter, bottomTextLeft);
+	painter->drawText(bottomTextRect, Qt::AlignRight | Qt::AlignVCenter, bottomTextRight);
 
 	painter->restore();
 }

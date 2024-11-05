@@ -77,6 +77,6 @@ int main(int argc, char** argv)
 	});
 
 	example.run();
-
+	std::system("pause");
 	return 0;
 }
