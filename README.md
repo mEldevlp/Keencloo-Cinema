@@ -9,7 +9,7 @@ Simplify the lives of movie fans
 <details>
   <summary>View screens</summary>
   <img src="https://i.imgur.com/QMXUBdY.png" alt="first screen" width="700"/>
-  <img src="https://i.imgur.com/qaDk3Qp.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/FqAIDai.png" alt="second screen" width="400"/>
 </details>
 
 ### Technologies
