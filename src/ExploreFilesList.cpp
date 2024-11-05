@@ -167,16 +167,16 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	// ---------
 
-	// Установим отступы для rect
-	int verticalPadding = 10;  // Отступ сверху и снизу
+	// Set padding for rect
+	int verticalPadding = 10; // up/down padding
 	QRect adjustedRect = option.rect.adjusted(9, verticalPadding, -9, -verticalPadding);
 
-	// Определяем квадратный размер для изображения (равен всей высоте)
+	// Calc rect size for img (full height item)
 	int padding = 5;
-	int imageSize = adjustedRect.height();  // Квадрат по высоте adjustedRect
+	int imageSize = adjustedRect.height();
 	QRect imageRect(adjustedRect.left(), adjustedRect.top(), imageSize, imageSize);
 
-	// Прямоугольники для текста
+	// Rect for texts
 	int textAreaWidth = adjustedRect.width() - imageSize - padding;
 	int textAreaLeft = imageRect.right() + padding;
 	int lineHeight = imageRect.height() / 3;
@@ -185,10 +185,10 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QRect middleTextRect(textAreaLeft, imageRect.top() + lineHeight, textAreaWidth, lineHeight);
 	QRect bottomTextRect(textAreaLeft, imageRect.top() + 2 * lineHeight, textAreaWidth, lineHeight);
 
-	// Рисуем изображение и текст
+	// Draw preview
 	painter->drawImage(imageRect, video.preview);
 
-	// Форматируем текст и выравниваем правые элементы
+	// Format text and align elements
 	QString topTextLeft = video.title;
 	QString topTextRight = video.duration;
 
@@ -198,15 +198,15 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QString bottomTextLeft = video.fps + " FPS";
 	QString bottomTextRight = video.fileSize + " MB";
 
-	// Рисуем верхнюю строку (title слева, duration справа)
+	// Draw up line (title left, duration right)
 	painter->drawText(topTextRect, Qt::AlignLeft | Qt::AlignVCenter, topTextLeft);
 	painter->drawText(topTextRect, Qt::AlignRight | Qt::AlignVCenter, topTextRight);
 
-	// Рисуем среднюю строку (resolution слева, bitrate справа)
+	// Draw middle line
 	painter->drawText(middleTextRect, Qt::AlignLeft | Qt::AlignVCenter, middleTextLeft);
 	painter->drawText(middleTextRect, Qt::AlignRight | Qt::AlignVCenter, middleTextRight);
 
-	// Рисуем нижнюю строку (fps слева, filesize справа)
+	// Draw bottom line
 	painter->drawText(bottomTextRect, Qt::AlignLeft | Qt::AlignVCenter, bottomTextLeft);
 	painter->drawText(bottomTextRect, Qt::AlignRight | Qt::AlignVCenter, bottomTextRight);
 
