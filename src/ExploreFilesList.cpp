@@ -135,7 +135,7 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QTime total_time((duration / 3600ll) % 60, (duration / 60ll) % 60ll, duration % 60ll, (duration * 1000) % 1000);
 	video.duration = total_time.toString((duration > 3600ll) ? "hh:mm:ss" : "mm:ss");
 
-	static auto cut_bit_rate = [](long long bit) -> QString {
+	static auto convert_bits = [](long long bit) -> QString {
 		long long divider = 1;
 		QString vel = "bits";
 
@@ -158,11 +158,11 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 		return QString::number(bit / divider) + vel;
 		};
 
-	video.videoBitRate = cut_bit_rate(metadata.video_bit_rate + 1) + "ps"; // video bitrate 
-	video.audioBitRate = cut_bit_rate(metadata.audio_bit_rate + 1) + "ps";
+	video.videoBitRate = convert_bits(metadata.video_bit_rate + 1) + "ps"; // video bitrate 
+	video.audioBitRate = convert_bits(metadata.audio_bit_rate + 1) + "ps";
 
 	// TODO make div mb gb kb
-	video.fileSize = cut_bit_rate(metadata.file_size);
+	video.fileSize = convert_bits(metadata.file_size);
 	video.fps = QString::number(static_cast<int>(metadata.fps));
 
 	// ---------
