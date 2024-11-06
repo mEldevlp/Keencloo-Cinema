@@ -135,34 +135,9 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QTime total_time((duration / 3600ll) % 60, (duration / 60ll) % 60ll, duration % 60ll, (duration * 1000) % 1000);
 	video.duration = total_time.toString((duration > 3600ll) ? "hh:mm:ss" : "mm:ss");
 
-	static auto convert_bits = [](long long bit) -> QString {
-		long long divider = 1;
-		QString vel = "bits";
-
-		if (bit >= 1000000000ll)
-		{
-			divider = 1000000000ll;
-			vel = " GB";
-		}
-		else if (bit >= 1000000ll)
-		{
-			divider = 1000000ll;
-			vel = " MB";
-		}
-		else if (bit >= 1000ll)
-		{
-			divider = 1000ll;
-			vel = " KB";
-		}
-
-		return QString::number(bit / divider) + vel;
-		};
-
-	video.videoBitRate = convert_bits(metadata.video_bit_rate + 1) + "ps"; // video bitrate 
-	video.audioBitRate = convert_bits(metadata.audio_bit_rate + 1) + "ps";
-
-	// TODO make div mb gb kb
-	video.fileSize = convert_bits(metadata.file_size);
+	video.videoBitRate = video.convertToByte(metadata.video_bit_rate, true) + "ps"; // video bitrate 
+	video.audioBitRate = video.convertToByte(metadata.audio_bit_rate, true) + "ps";
+	video.fileSize = video.convertToByte(metadata.file_size);
 	video.fps = QString::number(static_cast<int>(metadata.fps));
 
 	// ---------
@@ -181,9 +156,9 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	int textAreaLeft = imageRect.right() + padding;
 	int lineHeight = imageRect.height() / 3;
 
-	QRect topTextRect(textAreaLeft, imageRect.top(), textAreaWidth, lineHeight);
+	QRect topTextRect(textAreaLeft, imageRect.top() - padding, textAreaWidth, lineHeight);
 	QRect middleTextRect(textAreaLeft, imageRect.top() + lineHeight, textAreaWidth, lineHeight);
-	QRect bottomTextRect(textAreaLeft, imageRect.top() + 2 * lineHeight, textAreaWidth, lineHeight);
+	QRect bottomTextRect(textAreaLeft, imageRect.top() + 2 * lineHeight + padding, textAreaWidth, lineHeight);
 
 	// Draw preview
 	painter->drawImage(imageRect, video.preview);
@@ -193,7 +168,7 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QString topTextRight = video.duration;
 
 	QString middleTextLeft = video.resolution;
-	QString middleTextRight = video.audioBitRate;
+	QString middleTextRight = video.videoBitRate;
 
 	QString bottomTextLeft = video.fps + " FPS";
 	QString bottomTextRight = video.fileSize;
@@ -217,3 +192,32 @@ QSize QFilesItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QMo
 {
 	return QSize(option.rect.width(), 100);
 }
+
+QString VideoFile::convertToByte(unsigned long long bit, bool isDecimal)
+{
+	// 18168034
+	int step = 0;
+	uint64_t unit = 1;
+	uint64_t divider = isDecimal ? 1000ull : 1024ull;
+	QString unit_prefix[] = {" B", " KB", " MB", " GB" };
+
+	while (bit >= unit * divider && step < 3)
+	{
+		unit *= divider;
+		++step;
+	}
+
+	if (isDecimal)
+	{
+		return QString::number((bit / unit) + 1) + unit_prefix[step];
+	}
+	else
+	{
+		double size = static_cast<double>(bit) / unit;
+		uint64_t int_part = static_cast<uint64_t>(size);
+		uint64_t frac_part = static_cast<uint64_t>((size - int_part) * 100);
+
+		return QString::number(int_part) + "." + QString::number(frac_part) + unit_prefix[step];
+	}
+}
+

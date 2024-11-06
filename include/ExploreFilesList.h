@@ -16,6 +16,8 @@ struct VideoFile
 	QString videoBitRate;
 	QString fileSize;
 	QString fps;
+
+	QString convertToByte(unsigned long long bit, bool isDecimal = false);
 };
 
 class ExploreFilesList : public BaseDesignWindow
