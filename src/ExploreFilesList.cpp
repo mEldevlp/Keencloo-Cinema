@@ -137,32 +137,32 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	static auto cut_bit_rate = [](long long bit) -> QString {
 		long long divider = 1;
-		QString vel = "bps";
+		QString vel = "bits";
 
 		if (bit >= 1000000000ll)
 		{
 			divider = 1000000000ll;
-			vel = " g" + vel;
+			vel = " GB";
 		}
 		else if (bit >= 1000000ll)
 		{
 			divider = 1000000ll;
-			vel = " m" + vel;
+			vel = " MB";
 		}
 		else if (bit >= 1000ll)
 		{
 			divider = 1000ll;
-			vel = " k" + vel;
+			vel = " KB";
 		}
 
 		return QString::number(bit / divider) + vel;
 		};
 
-	video.videoBitRate = cut_bit_rate(metadata.video_bit_rate + 1); // video bitrate 
-	video.audioBitRate = cut_bit_rate(metadata.audio_bit_rate + 1);
+	video.videoBitRate = cut_bit_rate(metadata.video_bit_rate + 1) + "ps"; // video bitrate 
+	video.audioBitRate = cut_bit_rate(metadata.audio_bit_rate + 1) + "ps";
 
 	// TODO make div mb gb kb
-	video.fileSize = QString::number(metadata.file_size / (1024 * 1024));
+	video.fileSize = cut_bit_rate(metadata.file_size);
 	video.fps = QString::number(static_cast<int>(metadata.fps));
 
 	// ---------
@@ -196,7 +196,7 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QString middleTextRight = video.audioBitRate;
 
 	QString bottomTextLeft = video.fps + " FPS";
-	QString bottomTextRight = video.fileSize + " MB";
+	QString bottomTextRight = video.fileSize;
 
 	// Draw up line (title left, duration right)
 	painter->drawText(topTextRect, Qt::AlignLeft | Qt::AlignVCenter, topTextLeft);
