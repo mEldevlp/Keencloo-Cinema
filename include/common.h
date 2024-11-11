@@ -36,3 +36,5 @@ extern "C" {
 
 #define DEFAULT_RES 1280, 720
 #define SERVE_RES	720, 480
+
+#define MAX_LENGTH_TITLE_PX 430

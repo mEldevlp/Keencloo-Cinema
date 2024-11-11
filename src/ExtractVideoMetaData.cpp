@@ -84,15 +84,30 @@ MetaDataVideo extract_video_metadata(const char* file)
     }
 
     int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, codecContext->width, codecContext->height, 1);
-    uint8_t* buffer = reinterpret_cast<uint8_t*>(av_malloc(numBytes * sizeof(uint8_t)));
-
-    av_image_fill_arrays(frameRGB->data, frameRGB->linesize, buffer, AV_PIX_FMT_RGB24, codecContext->width, codecContext->height, 1);
+    //uint8_t* buffer = reinterpret_cast<uint8_t*>(av_malloc(numBytes * sizeof(uint8_t)));
+    std::vector<uint8_t> buffer(numBytes);
 
     struct SwsContext* swsContext = sws_getContext(codecContext->width, codecContext->height, codecContext->pix_fmt,
         codecContext->width, codecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, nullptr, nullptr, nullptr);
 
-    AVPacket packet = { 0 };
+    av_image_fill_arrays(frameRGB->data, frameRGB->linesize, buffer.data(), AV_PIX_FMT_RGB24, codecContext->width, codecContext->height, 1);
 
+    // get 5% frame from video
+    int64_t timestamp = av_rescale_q(formatContext->duration * 0.05, AV_TIME_BASE_Q, formatContext->streams[videoStreamIndex]->time_base);
+
+    if (av_seek_frame(formatContext, videoStreamIndex, timestamp, AVSEEK_FLAG_BACKWARD) < 0)
+    {
+        sws_freeContext(swsContext);
+        av_frame_free(&frame);
+        av_frame_free(&frameRGB);
+        avcodec_free_context(&codecContext);
+        avformat_close_input(&formatContext);
+        return MetaDataVideo();
+    }
+
+    avcodec_flush_buffers(codecContext);
+   
+    AVPacket packet = { 0 };
     packet.data = nullptr;
     packet.size = 0;
 
@@ -112,7 +127,8 @@ MetaDataVideo extract_video_metadata(const char* file)
                     metadata.frame_data.resolution.width = codecContext->width;
                     metadata.frame_data.resolution.height = codecContext->height;
                     metadata.frame_data.channels = 3; // RGB
-                    metadata.frame_data.data.assign(frameRGB->data[0], frameRGB->data[0] + numBytes);
+                    //metadata.frame_data.data.assign(frameRGB->data[0], frameRGB->data[0] + numBytes);
+                    metadata.frame_data.data = buffer;
                     break;
                 }
             }
@@ -136,7 +152,6 @@ MetaDataVideo extract_video_metadata(const char* file)
     
     // Close file and free resources
     sws_freeContext(swsContext);
-    av_free(buffer);
     av_frame_free(&frame);
     av_frame_free(&frameRGB);
     avcodec_free_context(&codecContext);

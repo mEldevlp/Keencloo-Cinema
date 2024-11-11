@@ -163,8 +163,21 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	// Draw preview
 	painter->drawImage(imageRect, video.preview);
 
-	// Format text and align elements
-	QString topTextLeft = video.title;
+	// Fonts for title and other
+	QFont fontTitle("Arial", 13, QFont::Bold);
+	QFont fontNormal("Arial", 10, QFont::Normal);
+	
+	// Slice QString until length in pixels is less than MAX_LENGTH_TITLE_PX (430)
+	QString truncatedTitle = video.title;
+	qsizetype len = video.title.size();
+	QFontMetrics fm(fontTitle);
+	while (fm.horizontalAdvance(truncatedTitle) >= MAX_LENGTH_TITLE_PX)
+	{
+		--len;
+		truncatedTitle = video.title.left(len);
+	}
+
+	QString topTextLeft = len == video.title.size() ? truncatedTitle : truncatedTitle + "...";
 	QString topTextRight = video.duration;
 
 	QString middleTextLeft = video.resolution;
@@ -174,7 +187,10 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	QString bottomTextRight = video.fileSize;
 
 	// Draw up line (title left, duration right)
+	painter->setFont(fontTitle);
 	painter->drawText(topTextRect, Qt::AlignLeft | Qt::AlignVCenter, topTextLeft);
+
+	painter->setFont(fontNormal);
 	painter->drawText(topTextRect, Qt::AlignRight | Qt::AlignVCenter, topTextRight);
 
 	// Draw middle line
