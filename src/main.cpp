@@ -21,8 +21,8 @@ int main(int argc, char** argv)
 
     a.setPalette(palette);
 
-    ExploreFilesList w;
-    //MediaPlayer w;
+    //ExploreFilesList w;
+    MediaPlayer w;
     w.show();
     return a.exec();
 }

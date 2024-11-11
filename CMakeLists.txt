@@ -102,7 +102,11 @@ if(WIN32)
 		# This folder for resources
         COMMAND ${CMAKE_COMMAND} -E make_directory
         "$<TARGET_FILE_DIR:Keencloo>/rsc"
-        
+		
+		# For all builds
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+        "${CMAKE_SOURCE_DIR}/build/rsc"
+		
         # Copy the DLLs to the output directory
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${FFMPEG_BIN_DIR}/avcodec-61.dll"
@@ -115,11 +119,28 @@ if(WIN32)
         "${FFMPEG_BIN_DIR}/swscale-8.dll"
         $<TARGET_FILE_DIR:Keencloo>
 		
-		# Copy the DLLs to the output directory
+		# Copy the icons
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
         "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
+        "${CMAKE_SOURCE_DIR}/rsc/close_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films_hover.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/minimize_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
 		"$<TARGET_FILE_DIR:Keencloo>/rsc"
+		
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
+        "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
+        "${CMAKE_SOURCE_DIR}/rsc/close_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films_hover.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/minimize_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
+		"${CMAKE_SOURCE_DIR}/build/rsc"
     )
 endif()
 

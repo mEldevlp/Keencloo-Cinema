@@ -8,13 +8,13 @@ Simplify the lives of movie fans
 ### Screenshots
 <details>
   <summary>View screens</summary>
-  <img src="https://i.imgur.com/QMXUBdY.png" alt="first screen" width="700"/>
-  <img src="https://i.imgur.com/FqAIDai.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/46aX3yQ.png" alt="first screen" width="700"/>
+  <img src="https://i.imgur.com/8J8xgdi.png" alt="second screen" width="400"/>
 </details>
 
 ### Technologies
 - **[MSVC](https://visualstudio.microsoft.com/ru)**: Visual Studio 2022
-- **[Qt](https://www.qt.io/download-dev)**: Version 6.7.2 or higher.
+- **[Qt](https://www.qt.io/download-dev)**: Version msvc 6.7.2 or higher.
 - **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: build n7.1 
 - **[RapidJSON](https://rapidjson.org/)**: _(soon in project)_
 
@@ -78,9 +78,11 @@ Keencloo-Cinema\build\Release\videos\
 - [ ] Customize the video bar
 - [x] Run through a list and an abstract model
 - [ ] There should be a video file name, the length of the video, and how much has already been watched, if not watched, then do not show it or highlight it separately somehow
+- [x] Hover effects at icons in main window
 - [ ] Hover effects when pointing at elements
 - [ ] When clicked, this video opens
 - [ ] Settings window
 - [ ] Drag and drop video in video player
+- [ ] In 'ExploreFilesList' make search(text) & sort
 
 and more..

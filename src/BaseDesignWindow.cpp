@@ -6,13 +6,16 @@ void BaseUI::setup_ui(QWidget* parent)
 
     iconLabel = new QLabel(centralWidget); // logo
     
-    QPixmap iconPixmap(QString(QCoreApplication::applicationDirPath() + "/rsc/logo_full.png"));
+    QPixmap iconPixmap(QString(APP_DIR + "/rsc/logo_full.png"));
 
     iconLabel->setPixmap(iconPixmap.scaled(120, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     closeButton = new QPushButton(centralWidget);
+
+    closeButton->setIcon(QIcon(APP_DIR + "/rsc/close_window.ico"));
     //fullscreenButton = new QPushButton(centralWidget);
     hideButton = new QPushButton(centralWidget);
+    hideButton->setIcon(QIcon(APP_DIR + "/rsc/minimize_window.ico"));
     
     topLayout = new QHBoxLayout();
     //topLayout->addStretch();
@@ -28,21 +31,28 @@ void BaseUI::setup_ui(QWidget* parent)
         "QPushButton {"
         "  border-radius: 5px;"
         "  background-color: #27c4c3;"
-        "  padding: 5px;"
+        "  padding: 8px;"
         "}"
         "QPushButton:hover {"
-        "  background-color: grey;"        
+        "  background-color: #cecece;"        
         "}"
     );
 
     closeButton->setStyleSheet(
         "QPushButton {"
-        "  border-top-right-radius: 5px;"
-        "  background-color: #ff2e2e;"
-        "  padding: 5px;"          
+        "  background-color: none;"     
         "}"
         "QPushButton:hover {"
-        "  background-color: #990012;"
+        "  background-color: #d8504d;"
+        "}"
+    );
+
+    hideButton->setStyleSheet(
+        "QPushButton {"
+        "  background-color: none;"
+        "}"
+        "QPushButton:hover {"
+        "  background-color: #cecece;"
         "}"
     );
 
@@ -70,7 +80,7 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     setAttribute(Qt::WA_TranslucentBackground);
 
-    setWindowIcon(QIcon(QCoreApplication::applicationDirPath() + "/rsc/logo_minimal.png"));
+    setWindowIcon(QIcon(APP_DIR + "/rsc/logo_minimal.png"));
 
     connect(ui->closeButton, &QPushButton::clicked, this, &BaseDesignWindow::close);
     connect(ui->fullscreenButton, &QPushButton::clicked, this, &BaseDesignWindow::showMaximized);

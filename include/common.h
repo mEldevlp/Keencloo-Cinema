@@ -15,6 +15,7 @@
 #include <QtMultimediaWidgets>
 
 #include <QMouseEvent>
+#include <QPropertyAnimation>
 #pragma endregion
 
 #pragma region("External")
@@ -33,6 +34,8 @@ extern "C" {
 #pragma endregion
 
 #define KEENCLOO_DEBUG
+
+#define APP_DIR QCoreApplication::applicationDirPath()
 
 #define DEFAULT_RES 1280, 720
 #define SERVE_RES	720, 480

@@ -17,5 +17,9 @@ private slots:
 
 protected:
 	VideoPlayer* videoPlayer = nullptr;
-	QPushButton* exploreFilesButton;
+	ExploreFilesList* exploreFilesList = nullptr;
+	
+public:
+	QPushButton* exploreFilesButton = nullptr;
+	QPushButton* settingsButton = nullptr;
 };

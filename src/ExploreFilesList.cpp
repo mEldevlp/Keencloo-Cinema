@@ -4,6 +4,8 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 	: BaseDesignWindow(parent)
 {
 	setMinimumSize(SERVE_RES);
+
+	ui->hideButton->hide();
 	listView = new QListView(this);
 	ui->mainLayout->addWidget(listView);
 	filesList = new QListFiles(this);
@@ -52,7 +54,10 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 }
 
 ExploreFilesList::~ExploreFilesList()
-{}
+{
+	delete listView;
+	delete filesList;
+}
 
 QListFiles::QListFiles(QObject* parent)
 	: QAbstractListModel(parent)
