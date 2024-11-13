@@ -2,8 +2,16 @@
 
 int main(int argc, char** argv)
 {
-    QApplication a(argc, argv);
-    a.setStyle(QStyleFactory::create("Fusion"));
+    QApplication keencloo_app(argc, argv);
+    keencloo_app.setStyle(QStyleFactory::create("Fusion"));
+
+    QFile style(APP_DIR + "/styles/style.qss");
+
+    if (style.open(QFile::ReadOnly))
+    {
+        keencloo_app.setStyleSheet(static_cast<QString>(style.readAll()));
+        style.close();
+    }
 
     QPalette palette;
     palette.setColor(QPalette::Window, Qt::white);        
@@ -19,11 +27,11 @@ int main(int argc, char** argv)
     palette.setColor(QPalette::Highlight, Qt::blue);      
     palette.setColor(QPalette::HighlightedText, Qt::white); 
 
-    a.setPalette(palette);
+    keencloo_app.setPalette(palette);
 
     //ExploreFilesList w;
-    MediaPlayer w;
-    w.show();
-    return a.exec();
-}
+    MediaPlayer keencloo_main;
+    keencloo_main.show();
 
+    return keencloo_app.exec();
+}

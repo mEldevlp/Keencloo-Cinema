@@ -7,33 +7,11 @@ MediaPlayer::MediaPlayer(QWidget* parent)
     
 	exploreFilesButton = new QPushButton();
     exploreFilesButton->setIcon(QIcon(APP_DIR + "/rsc/folder_films.ico"));
-    exploreFilesButton->setStyleSheet(
-        "QPushButton {"
-        "  padding: 0px;"
-        "  background-color: none;"
-        "  icon-size: 28px 28px;"
-        "}"
-        "QPushButton:hover {"
-        "  icon: url(./rsc/folder_films_hover.ico);"
-        "  icon-size: 28px 28px;"
-        "}"
-    );
+    exploreFilesButton->setObjectName("exploreFilesButton");
 
     settingsButton = new QPushButton();
     settingsButton->setIcon(QIcon(APP_DIR + "/rsc/settings.ico"));
-    settingsButton->setStyleSheet(
-        "QPushButton {"
-        "  padding: 0px;"
-        "  background-color: none;"
-        "  icon-size: 28px 28px;"
-        "}"
-        "QPushButton:hover {"
-        "  icon: url(./rsc/settings_hover.ico);"
-        "  icon-size: 28px 28px;"
-        "}"
-    );
-
-    // Создаем анимацию для прозрачности
+    settingsButton->setObjectName("settingsButton");
 
 	ui->mainLayout->addWidget(videoPlayer);
 	ui->mainLayout->addWidget(settingsButton);
@@ -49,7 +27,6 @@ MediaPlayer::~MediaPlayer()
 	delete videoPlayer;
 }
 
-
 void MediaPlayer::on_exploreFilesButton_click()
 {
     const auto topLevelWidgets = QApplication::topLevelWidgets();
@@ -63,17 +40,17 @@ void MediaPlayer::on_exploreFilesButton_click()
         // Get center parent
         QPoint center = this->geometry().center();
 
-        this->exploreFilesList = new ExploreFilesList();
-        this->exploreFilesList->setObjectName("ExploreFilesList");
+        exploreFilesList = new ExploreFilesList();
+        exploreFilesList->setObjectName("ExploreFilesList");
         
-        this->exploreFilesList->show();
+        exploreFilesList->show();
 
         // Move new window to center of parent
-        this->exploreFilesList->move(center - QPoint(exploreFilesList->width() / 2, exploreFilesList->height() / 2));
+        exploreFilesList->move(center - QPoint(exploreFilesList->width() / 2, exploreFilesList->height() / 2));
     }
     else
     {
-        this->exploreFilesList->raise();
-        this->exploreFilesList->activateWindow();
+        exploreFilesList->raise();
+        exploreFilesList->activateWindow();
     }
 }

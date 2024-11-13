@@ -1,0 +1,70 @@
+QListView
+{
+    background: transparent;
+}
+
+QScrollBar:vertical
+{
+    border: none;
+    background-color: #c0c0c0;
+    width: 15px;
+    margin: 0px 0px 5px 5px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical
+{
+    background-color: #27c4c3;
+    min-height: 10px;
+    max-height: 10px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical
+{
+    background: none;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+    background: none;
+}
+
+QPushButton
+{
+    border-radius: 5px;
+    background-color: #27c4c3;
+    padding: 7px;
+}
+
+#closeButton, #hideButton
+{
+    background-color: none;
+}
+
+#closeButton:hover
+{
+    background-color: #d8504d;
+}
+
+QPushButton:hover, #hideButton:hover
+{
+    background-color: #cecece;
+}
+
+#exploreFilesButton, #settingsButton
+{
+	padding: 0px;
+	background-color: none;
+	icon-size: 24px 24px;
+}
+
+#exploreFilesButton:hover
+{
+	icon: url(./../rsc/folder_films_hover.ico);
+}
+
+#settingsButton:hover
+{
+	icon: url(./../rsc/settings_hover.ico);
+}

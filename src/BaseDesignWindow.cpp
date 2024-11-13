@@ -11,12 +11,14 @@ void BaseUI::setup_ui(QWidget* parent)
     iconLabel->setPixmap(iconPixmap.scaled(120, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     closeButton = new QPushButton(centralWidget);
-
     closeButton->setIcon(QIcon(APP_DIR + "/rsc/close_window.ico"));
+    closeButton->setObjectName("closeButton");
+
     //fullscreenButton = new QPushButton(centralWidget);
     hideButton = new QPushButton(centralWidget);
     hideButton->setIcon(QIcon(APP_DIR + "/rsc/minimize_window.ico"));
-    
+    hideButton->setObjectName("hideButton");
+
     topLayout = new QHBoxLayout();
     //topLayout->addStretch();
     topLayout->addWidget(iconLabel);
@@ -26,36 +28,7 @@ void BaseUI::setup_ui(QWidget* parent)
     topLayout->addWidget(closeButton);
     topLayout->setContentsMargins(10, 10, 10, 0);
     topLayout->setSpacing(10);
-
-    centralWidget->setStyleSheet(
-        "QPushButton {"
-        "  border-radius: 5px;"
-        "  background-color: #27c4c3;"
-        "  padding: 8px;"
-        "}"
-        "QPushButton:hover {"
-        "  background-color: #cecece;"        
-        "}"
-    );
-
-    closeButton->setStyleSheet(
-        "QPushButton {"
-        "  background-color: none;"     
-        "}"
-        "QPushButton:hover {"
-        "  background-color: #d8504d;"
-        "}"
-    );
-
-    hideButton->setStyleSheet(
-        "QPushButton {"
-        "  background-color: none;"
-        "}"
-        "QPushButton:hover {"
-        "  background-color: #cecece;"
-        "}"
-    );
-
+     
     mainLayout = new QVBoxLayout(centralWidget);
     mainLayout->addLayout(topLayout);
 

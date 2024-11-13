@@ -42,11 +42,11 @@ include_directories(${FFMPEG_INCLUDE_DIR})
 file(GLOB_RECURSE SOURCES
     "${INCLUDE_DIR}/*.h"
     "${SOURCE_DIR}/*.cpp"
+	"${CMAKE_SOURCE_DIR}/styles/*.qss"
 )
 
 add_library(LIB_KEENCLOO STATIC ${SOURCES})
 target_include_directories(LIB_KEENCLOO PUBLIC ${INCLUDE_DIR})
-
 
 add_executable(Keencloo WIN32 ${SOURCES})
 
@@ -95,17 +95,21 @@ add_subdirectory(unit_tests)
 # Copy DLL file into dir with execute file (win only)
 if(WIN32)
     add_custom_command(TARGET Keencloo POST_BUILD
-        # This folder for video
+        # Folder for video
         COMMAND ${CMAKE_COMMAND} -E make_directory
         "$<TARGET_FILE_DIR:Keencloo>/videos"
 		
-		# This folder for resources
+		# Folder for resources
         COMMAND ${CMAKE_COMMAND} -E make_directory
         "$<TARGET_FILE_DIR:Keencloo>/rsc"
 		
 		# For all builds
         COMMAND ${CMAKE_COMMAND} -E make_directory
         "${CMAKE_SOURCE_DIR}/build/rsc"
+		
+		# For all styles
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+        "$<TARGET_FILE_DIR:Keencloo>/styles"
 		
         # Copy the DLLs to the output directory
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
@@ -119,7 +123,7 @@ if(WIN32)
         "${FFMPEG_BIN_DIR}/swscale-8.dll"
         $<TARGET_FILE_DIR:Keencloo>
 		
-		# Copy the icons
+		# Copy the icons for bin
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
         "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
@@ -131,6 +135,7 @@ if(WIN32)
         "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
 		"$<TARGET_FILE_DIR:Keencloo>/rsc"
 		
+		# for all debug
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
         "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
@@ -141,6 +146,10 @@ if(WIN32)
         "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
         "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
 		"${CMAKE_SOURCE_DIR}/build/rsc"
+		
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/styles/style.qss"
+		"$<TARGET_FILE_DIR:Keencloo>/styles"
     )
 endif()
 

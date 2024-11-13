@@ -12,45 +12,15 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 
 	listView->setModel(filesList);
 	listView->setItemDelegate(new QFilesItemDelegate(listView));
+	listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	QDir dir(QCoreApplication::applicationDirPath() + "/videos");
+	QDir dir(APP_DIR + "/videos");
 	QStringList files = dir.entryList(QDir::Files);
 
 	for (const QString& fileName : files)
 	{
 		filesList->addVideoFile(dir.absoluteFilePath(fileName).toStdString());
 	}
-
-#pragma region("qss style")
-	listView->setStyleSheet(
-		"QListView {"
-		"	background: transparent;"
-		"}"
-
-		"QScrollBar:vertical {"
-		"    border: none;"
-		"    background-color: #c0c0c0;"
-		"    width: 15px;"
-		"    margin: 0px 0px 5px 5px;"
-		"    border-radius: 5px;"
-		"}"
-
-		"QScrollBar::handle:vertical {"
-		"    background-color: #27c4c3;"
-		"    min-height: 10px;"
-		"    max-height: 10px;"
-		"    border-radius: 5px;"
-		"}"
-
-		"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
-		"    background: none;"
-		"}"
-
-		"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {"
-		"    background: none;"
-		"}"
-	);
-#pragma endregion
 }
 
 ExploreFilesList::~ExploreFilesList()
@@ -216,7 +186,6 @@ QSize QFilesItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QMo
 
 QString VideoFile::convertToByte(unsigned long long bit, bool isDecimal)
 {
-	// 18168034
 	int step = 0;
 	uint64_t unit = 1;
 	uint64_t divider = isDecimal ? 1000ull : 1024ull;
