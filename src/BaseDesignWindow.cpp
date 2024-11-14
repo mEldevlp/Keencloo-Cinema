@@ -55,7 +55,10 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
 
     setWindowIcon(QIcon(APP_DIR + "/rsc/logo_minimal.png"));
 
-    connect(ui->closeButton, &QPushButton::clicked, this, &BaseDesignWindow::close);
+    connect(ui->closeButton, &QPushButton::clicked, this, [this]() {
+        this->close();
+        this->deleteLater();
+        });
     connect(ui->fullscreenButton, &QPushButton::clicked, this, &BaseDesignWindow::showMaximized);
     connect(ui->hideButton, &QPushButton::clicked, this, &BaseDesignWindow::showMinimized);
 }

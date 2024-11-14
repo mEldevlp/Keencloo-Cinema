@@ -40,7 +40,7 @@ void MediaPlayer::on_exploreFilesButton_click()
         // Get center parent
         QPoint center = this->geometry().center();
 
-        exploreFilesList = new ExploreFilesList();
+        exploreFilesList = new ExploreFilesList(this);
         exploreFilesList->setObjectName("ExploreFilesList");
         
         exploreFilesList->show();
