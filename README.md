@@ -83,7 +83,7 @@ Keencloo-Cinema\build\Release\videos\
 - [ ] There should be a video file name, the length of the video, and how much has already been watched, if not watched, then do not show it or highlight it separately somehow
 - [x] Hover effects at icons in main window
 - [ ] Hover effects when pointing at elements
-- [ ] When clicked, this video opens
+- [x] When clicked, this video opens
 - [ ] Settings window
 - [ ] Drag and drop video in video player
 - [ ] In 'ExploreFilesList' make search(text) & sort
