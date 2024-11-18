@@ -1,7 +1,13 @@
 #include "Keencloo.h"
+#include <rapidjson/document.h>
 
 int main(int argc, char** argv)
 {
+    // working test
+    const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
+    rapidjson::Document document;
+    document.Parse(json);
+
     QApplication keencloo_app(argc, argv);
     keencloo_app.setStyle(QStyleFactory::create("Fusion"));
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.9)
 
 project(Keencloo LANGUAGES CXX)
 
@@ -91,6 +91,9 @@ target_link_libraries(Keencloo PRIVATE
 
 # Unit tests for Keencloo
 add_subdirectory(unit_tests)
+
+# rapidjson
+include_directories(libs/rapidjson/include)
 
 # Copy DLL file into dir with execute file (win only)
 if(WIN32)
