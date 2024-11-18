@@ -16,7 +16,7 @@ Simplify the lives of movie fans
 - **[MSVC](https://visualstudio.microsoft.com/ru)**: Visual Studio 2022
 - **[Qt](https://www.qt.io/download-dev)**: Version msvc 6.7.2 or higher.
 - **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: build n7.1 
-- **[RapidJSON](https://github.com/Tencent/rapidjson/releases/tag/v1.1.0)**: _release v1.1.0_
+- **[RapidJSON](https://github.com/Tencent/rapidjson/releases/tag/v1.1.0)**: release v1.1.0
 
 ### Install & Build
 Install environment variable Qt path:
