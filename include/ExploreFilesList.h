@@ -2,6 +2,7 @@
 
 #include "BaseDesignWindow.h"
 #include "ExtractVideoMetaData.h"
+#include "MediaPlayer.h"
 
 class QListFiles;
 
@@ -28,9 +29,13 @@ public:
 	explicit ExploreFilesList(QWidget* parent = nullptr);
 	~ExploreFilesList();
 
+private slots:
+	void doubleClicked(const QModelIndex& index);
+
 protected:
 	QListView* listView;
 	QListFiles* filesList;
+	MediaPlayer* mediaPlayer;
 };
 
 class QFilesItemDelegate : public QStyledItemDelegate

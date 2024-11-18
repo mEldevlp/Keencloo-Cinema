@@ -32,6 +32,8 @@ class VideoPlayer : public QWidget
 {
 	Q_OBJECT
 
+	friend class MediaPlayer;
+
 public:
 	explicit VideoPlayer(QWidget* parent = nullptr);
 	~VideoPlayer();
@@ -45,8 +47,10 @@ private slots:
 	void on_sliderDurationVideo_valueChanged(int value);
 
 protected:
+	bool eventFilter(QObject* watched, QEvent* event) override;
+
 	VideoPlayerUI* ui;
-	int64_t duration;
+	int64_t duration = 0ll;
 	bool is_paused = false;
 	bool is_muted = true;
 

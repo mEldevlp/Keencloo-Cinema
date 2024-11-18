@@ -1,6 +1,16 @@
+#videoPlayer, #videoBar
+{
+    border: 2px solid #000000;
+}
+
 QListView
 {
     background: transparent;
+}
+
+QListView::item:hover
+{
+    background-color: lightgray;
 }
 
 QScrollBar:vertical
@@ -33,7 +43,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 QPushButton
 {
     border-radius: 5px;
-    background-color: #27c4c3;
+    background-color: none;
     padding: 7px;
 }
 
@@ -45,11 +55,12 @@ QPushButton
 #closeButton:hover
 {
     background-color: #d8504d;
+    cursor: pointer;
 }
 
 QPushButton:hover, #hideButton:hover
 {
-    background-color: #cecece;
+    background-color: #27c4c3;
 }
 
 #exploreFilesButton, #settingsButton

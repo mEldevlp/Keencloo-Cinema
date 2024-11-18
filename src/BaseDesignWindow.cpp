@@ -7,7 +7,7 @@ void BaseUI::setup_ui(QWidget* parent)
     iconLabel = new QLabel(centralWidget); // logo
     
     QPixmap iconPixmap(QString(APP_DIR + "/rsc/logo_full.png"));
-
+     
     iconLabel->setPixmap(iconPixmap.scaled(120, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     closeButton = new QPushButton(centralWidget);
@@ -62,14 +62,14 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
     connect(ui->fullscreenButton, &QPushButton::clicked, this, &BaseDesignWindow::showMaximized);
     connect(ui->hideButton, &QPushButton::clicked, this, &BaseDesignWindow::showMinimized);
 }
-
+ 
 BaseDesignWindow::~BaseDesignWindow()
 {
     delete ui;
 }
 
 void BaseDesignWindow::paintEvent(QPaintEvent* event)
-{
+{ 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 

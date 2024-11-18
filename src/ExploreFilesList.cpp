@@ -5,6 +5,8 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 {
 	setMinimumSize(SERVE_RES);
 
+	mediaPlayer = qobject_cast<MediaPlayer*>(parent);
+
 	ui->hideButton->hide();
 	listView = new QListView(this);
 	ui->mainLayout->addWidget(listView);
@@ -21,12 +23,24 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 	{
 		filesList->addVideoFile(dir.absoluteFilePath(fileName).toStdString());
 	}
+
+	connect(listView, &QListView::doubleClicked, this, &ExploreFilesList::doubleClicked);
 }
 
 ExploreFilesList::~ExploreFilesList()
 {
 	delete listView;
 	delete filesList;
+}
+
+void ExploreFilesList::doubleClicked(const QModelIndex& index)
+{
+	if (index.isValid())
+	{
+		QString itemText = index.data(Qt::DisplayRole).value<std::string>().c_str();
+		mediaPlayer->openVideo(itemText); // !!
+		this->close();
+	}
 }
 
 QListFiles::QListFiles(QObject* parent)
@@ -45,14 +59,8 @@ QVariant QListFiles::data(const QModelIndex& index, int role) const
 
 	switch (role)
 	{
-		case Qt::DisplayRole:
-		{
-			return QVariant::fromValue(videoFiles[index.row()]);
-		}
-		default:
-		{
-			return QVariant();
-		}
+		case Qt::DisplayRole: return QVariant::fromValue(videoFiles[index.row()]);
+		default:			  return QVariant();
 	}
 }
 
@@ -79,7 +87,7 @@ Qt::ItemFlags QListFiles::flags(const QModelIndex& index) const
 QFilesItemDelegate::QFilesItemDelegate(QObject* parent)
 	: QStyledItemDelegate(parent)
 {}
-
+ 
 QWidget* QFilesItemDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
 	return nullptr;
@@ -116,6 +124,17 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	video.fps = QString::number(static_cast<int>(metadata.fps));
 
 	// ---------
+
+	QStyleOptionViewItem opt = option;
+	initStyleOption(&opt, index);
+
+	if (option.state & QStyle::State_MouseOver)
+	{
+		opt.backgroundBrush = QBrush(Qt::lightGray);
+	}
+
+
+	QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	// Set padding for rect
 	int verticalPadding = 10; // up/down padding

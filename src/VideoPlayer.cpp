@@ -12,8 +12,10 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	player->setVideoOutput(video);
 
 	videoPlayer = new QGroupBox();
+	videoPlayer->setObjectName("videoPlayer");
+
 	videoBar = new QGroupBox();
-	videoPlayer->setStyleSheet("QGroupBox { border: 2px solid black; }");
+	videoBar->setObjectName("videoBar");
 
 	videoPlayerLayout = new QVBoxLayout(videoPlayer);
 
@@ -25,11 +27,20 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	sliderDurationVideo = new QSlider(Qt::Orientation::Horizontal);
 	buttonsLayout = new QGridLayout();
 	stopPlayButton = new QPushButton();
+	stopPlayButton->setObjectName("stopPlayButton");
+	stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
+
 	volumeButton = new QPushButton();
+	volumeButton->setObjectName("volumeButton");
+	volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_up.ico"));
+
 	currentTimeVideo = new QLabel("00:00");
 	totalTimeVideo = new QLabel("00:00");
 	horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
 	fullscreenButton = new QPushButton();
+	fullscreenButton->setObjectName("fullscreenButton");
+	fullscreenButton->setIcon(QIcon(APP_DIR + "/rsc/fullscreen1.ico"));
 
 	buttonsLayout->addWidget(stopPlayButton, 0, 0);
 	buttonsLayout->addWidget(volumeButton, 0, 1);
@@ -62,6 +73,11 @@ VideoPlayer::VideoPlayer(QWidget* parent)
 	connect(ui->stopPlayButton, &QPushButton::clicked, this, &VideoPlayer::on_stopPlayButton_clicked);
 	connect(ui->fullscreenButton, &QPushButton::clicked, this, &VideoPlayer::on_fullscreenButton_clicked);
 	connect(ui->sliderDurationVideo, &QSlider::valueChanged, this, &VideoPlayer::on_sliderDurationVideo_valueChanged);
+
+	ui->volumeButton->installEventFilter(this);
+	ui->stopPlayButton->installEventFilter(this);
+	ui->fullscreenButton->installEventFilter(this);
+	ui->sliderDurationVideo->installEventFilter(this);
 	
 	connect(ui->player, &QMediaPlayer::durationChanged, this, &VideoPlayer::duration_changed);
 	connect(ui->player, &QMediaPlayer::positionChanged, this, &VideoPlayer::position_changed);
@@ -77,12 +93,12 @@ void VideoPlayer::on_stopPlayButton_clicked(bool check)
 	if (this->is_paused)
 	{
 		ui->player->play();
-		// change icon
+		ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
 	}
 	else
 	{
 		ui->player->pause();
-		// change icon
+		ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/pause.ico"));
 	}
 
 	this->is_paused = !this->is_paused;
@@ -93,12 +109,14 @@ void VideoPlayer::on_fullscreenButton_clicked()
 	// for tests
 	QString FileName = QFileDialog::getOpenFileName(this, tr("Select Video File"), "", tr("MP4 Files (*.mp4)"));
 
+	if (FileName.isEmpty()) return;
+
 	ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - 90);
 	ui->video->setParent(ui->videoPlayer);
 
 	ui->player->setSource(QUrl(FileName));
 
-	ui->sliderDurationVideo->setRange(0, ui->player->duration() / 1000);
+	ui->sliderDurationVideo->setRange(0, ui->player->duration() / 100);
 
 	ui->video->setVisible(true);
 	ui->video->show();
@@ -110,6 +128,25 @@ void VideoPlayer::on_sliderDurationVideo_valueChanged(int value)
 {
 	ui->sliderDurationVideo->setValue(value);
 	ui->player->setPosition(static_cast<qint64>(ui->sliderDurationVideo->value()) * 1000);
+}
+
+bool VideoPlayer::eventFilter(QObject* watched, QEvent* event)
+{
+	if (watched->isWidgetType() && qobject_cast<QPushButton*>(watched))
+	{
+		if (event->type() == QEvent::Enter)
+		{
+			qobject_cast<QWidget*>(watched)->setCursor(Qt::PointingHandCursor);
+			return true;
+		}
+		else if (event->type() == QEvent::Leave)
+		{
+			qobject_cast<QWidget*>(watched)->unsetCursor();
+			return true;
+		}
+	}
+
+	return QWidget::eventFilter(watched, event);
 }
 
 void VideoPlayer::duration_changed(int64_t duration)
@@ -140,13 +177,12 @@ void VideoPlayer::update_duration(int64_t duration)
 
 		ui->currentTimeVideo->setText(current_time.toString(format));
 		ui->totalTimeVideo->setText(total_time.toString(format));
-
 	}
 }
 
 void VideoPlayer::on_volumeButton_clicked()
 {
-	if (this->is_muted == false)
+	if (!this->is_muted)
 	{
 		this->is_muted = true;
 		// change icon muted

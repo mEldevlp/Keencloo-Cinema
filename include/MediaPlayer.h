@@ -8,18 +8,21 @@ class MediaPlayer : public BaseDesignWindow
 {
 	Q_OBJECT
 
+friend class ExploreFilesList;
+
 public:
 	explicit MediaPlayer(QWidget* parent = nullptr);
 	~MediaPlayer();
+	void openVideo(QString FileName);
 
 private slots:
 	void on_exploreFilesButton_click();
 
 protected:
-	VideoPlayer* videoPlayer = nullptr;
 	ExploreFilesList* exploreFilesList = nullptr;
 	
 public:
+	VideoPlayer* videoPlayer = nullptr;
 	QPushButton* exploreFilesButton = nullptr;
 	QPushButton* settingsButton = nullptr;
 };
