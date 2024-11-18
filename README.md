@@ -39,6 +39,9 @@ cd .\Keencloo-Cinema\
 mkdir libs
 cd .\libs\
 
+# Download rapidjson
+git clone https://github.com/Tencent/rapidjson.git
+
 # Download ffmpeg
 Invoke-WebRequest -Uri "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n7.1-latest-win64-gpl-shared-7.1.zip" -OutFile "ffmpeg.zip"
 Expand-Archive -Path "ffmpeg.zip" -DestinationPath .
