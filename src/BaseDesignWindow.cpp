@@ -3,7 +3,6 @@
 void BaseUI::setup_ui(QWidget* parent)
 {
     centralWidget = new QWidget(parent);
-
     iconLabel = new QLabel(centralWidget); // logo
     
     QPixmap iconPixmap(QString(APP_DIR + "/rsc/logo_full.png"));
@@ -48,12 +47,12 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
 {
     ui->setup_ui(this);
 
-    setCentralWidget(ui->centralWidget);
     setMinimumSize(DEFAULT_RES);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     setAttribute(Qt::WA_TranslucentBackground);
-
     setWindowIcon(QIcon(APP_DIR + "/rsc/logo_minimal.png"));
+
+    setCentralWidget(ui->centralWidget);
 
     connect(ui->closeButton, &QPushButton::clicked, this, [this]() {
         this->close();

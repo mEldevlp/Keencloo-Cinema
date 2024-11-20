@@ -1,13 +1,7 @@
 #include "Keencloo.h"
-#include <rapidjson/document.h>
 
 int main(int argc, char** argv)
 {
-    // working test
-    const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
-    rapidjson::Document document;
-    document.Parse(json);
-
     QApplication keencloo_app(argc, argv);
     keencloo_app.setStyle(QStyleFactory::create("Fusion"));
 
@@ -18,7 +12,7 @@ int main(int argc, char** argv)
         keencloo_app.setStyleSheet(static_cast<QString>(style.readAll()));
         style.close();
     }
-
+    
     QPalette palette;
     palette.setColor(QPalette::Window, Qt::white);        
     palette.setColor(QPalette::WindowText, Qt::black);    
@@ -34,10 +28,9 @@ int main(int argc, char** argv)
     palette.setColor(QPalette::HighlightedText, Qt::white); 
 
     keencloo_app.setPalette(palette);
-
-    //ExploreFilesList w;
+    
     MediaPlayer keencloo_main;
     keencloo_main.show();
-
+   
     return keencloo_app.exec();
 }

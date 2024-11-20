@@ -13,7 +13,7 @@ friend class ExploreFilesList;
 public:
 	explicit MediaPlayer(QWidget* parent = nullptr);
 	~MediaPlayer();
-	void openVideo(QString FileName);
+	void openVideo(QString FileName) const;
 
 private slots:
 	void on_exploreFilesButton_click();

@@ -1,6 +1,6 @@
 #include "ExploreFilesList.h"
 
-ExploreFilesList::ExploreFilesList(QWidget* parent)
+ExploreFilesList::ExploreFilesList(QWidget* parent, const std::string& folder)
 	: BaseDesignWindow(parent)
 {
 	setMinimumSize(SERVE_RES);
@@ -16,11 +16,13 @@ ExploreFilesList::ExploreFilesList(QWidget* parent)
 	listView->setItemDelegate(new QFilesItemDelegate(listView));
 	listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	QDir dir(APP_DIR + "/videos");
+	QDir dir(folder.empty() ? APP_DIR + "/videos" : folder.c_str());
+
 	QStringList files = dir.entryList(QDir::Files);
 
 	for (const QString& fileName : files)
 	{
+		// check the file in video extension (*.mp4)
 		filesList->addVideoFile(dir.absoluteFilePath(fileName).toStdString());
 	}
 
@@ -122,7 +124,7 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	video.audioBitRate = video.convertToByte(metadata.audio_bit_rate, true) + "ps";
 	video.fileSize = video.convertToByte(metadata.file_size);
 	video.fps = QString::number(static_cast<int>(metadata.fps));
-
+	
 	// ---------
 
 	QStyleOptionViewItem opt = option;
@@ -130,9 +132,8 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	if (option.state & QStyle::State_MouseOver)
 	{
-		opt.backgroundBrush = QBrush(Qt::lightGray);
+		opt.backgroundBrush = QBrush(Qt::darkCyan);
 	}
-
 
 	QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 

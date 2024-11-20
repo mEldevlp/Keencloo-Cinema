@@ -27,34 +27,87 @@ MediaPlayer::~MediaPlayer()
 	delete videoPlayer;
 }
 
-void MediaPlayer::openVideo(QString FileName)
+void MediaPlayer::openVideo(QString FileName) const
 {
-    videoPlayer->ui->video->setGeometry(0, 0, videoPlayer->ui->videoPlayer->width(), videoPlayer->ui->videoPlayer->height() - 90);
-    videoPlayer->ui->video->setParent(videoPlayer->ui->videoPlayer);
+    auto ui = videoPlayer->ui;
 
-    videoPlayer->ui->player->setSource(QUrl(FileName));
+    ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - 90);
+    ui->video->setParent(ui->videoPlayer);
 
-    videoPlayer->ui->sliderDurationVideo->setRange(0, videoPlayer->ui->player->duration() / 100);
+    ui->player->setSource(QUrl(FileName));
 
-    videoPlayer->ui->video->setVisible(true);
-    videoPlayer->ui->video->show();
-    videoPlayer->ui->player->play();
+    ui->sliderDurationVideo->setRange(0, ui->player->duration() / 100);
+
+    ui->video->setVisible(true);
+    ui->video->show();
+    ui->player->play();
 }
 
 void MediaPlayer::on_exploreFilesButton_click()
 {
+    QFile settings(APP_DIR + "/settings.json");
+    std::string videos_folder_path = APP_DIR.toStdString() + "/videos"; // by default
+    
+    if (settings.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        std::string json_str = settings.readAll().toStdString();
+        rapidjson::Document settings_json;
+        settings_json.Parse(json_str.c_str());
+
+        if (json_str.empty())
+        {
+            QString settings_dir = QFileDialog::getExistingDirectory(this, "Choose folder", APP_DIR,
+                QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+            rapidjson::Document settings_json;
+            settings_json.SetObject();
+            auto& alloc = settings_json.GetAllocator();
+
+            settings_json.AddMember("dir", rapidjson::Value(settings_dir.toStdString().c_str(), alloc), alloc);
+
+            // Serialize JSON in string buffer
+            rapidjson::StringBuffer buffer;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+            settings_json.Accept(writer);
+
+            settings.resize(0); // clear the file
+
+            QTextStream out(&settings);
+            out << buffer.GetString();
+        }
+        else
+        {
+            settings_json.Parse(json_str.c_str());
+            std::string check_val = settings_json["dir"].GetString();
+
+            if (settings_json.HasMember("dir") && settings_json["dir"].IsString())
+            {
+                videos_folder_path = check_val;
+            }
+        }
+
+        settings.close();
+    }
+    else
+    {
+        // cannot open the file
+    }
+
+    // ---
+
     const auto topLevelWidgets = QApplication::topLevelWidgets();
     bool isWindowOpen = false;
     for (QWidget* widget : topLevelWidgets)
         if (widget->objectName() == "ExploreFilesList" && widget->isVisible())
             isWindowOpen = true;
 
+    // check the pointer (refactor) exploreFilesList
     if (!isWindowOpen)
     {
         // Get center parent
         QPoint center = this->geometry().center();
 
-        exploreFilesList = new ExploreFilesList(this);
+        exploreFilesList = new ExploreFilesList(this, videos_folder_path);
         exploreFilesList->setObjectName("ExploreFilesList");
         
         exploreFilesList->show();

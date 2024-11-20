@@ -26,7 +26,7 @@ class ExploreFilesList : public BaseDesignWindow
 	Q_OBJECT
 
 public:
-	explicit ExploreFilesList(QWidget* parent = nullptr);
+	explicit ExploreFilesList(QWidget* parent = nullptr, const std::string& folder = nullptr);
 	~ExploreFilesList();
 
 private slots:
