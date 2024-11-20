@@ -131,9 +131,12 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	if (option.state & QStyle::State_MouseOver)
 	{
-		opt.backgroundBrush = QBrush(Qt::darkCyan);
+		// Указываем координаты для заливки
+		QRect highlightRect = opt.rect.adjusted(1, 2, 0, -2); // Например, смещение на 5 пикселей от границ
+		painter->fillRect(highlightRect, Qt::darkCyan);
 	}
 
+	// Отрисовываем остальную часть элемента
 	QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	// Set padding for rect
