@@ -18,11 +18,10 @@ ExploreFilesList::ExploreFilesList(QWidget* parent, const std::string& folder)
 
 	QDir dir(folder.empty() ? APP_DIR + "/videos" : folder.c_str());
 
-	QStringList files = dir.entryList(QDir::Files);
+	QStringList files = dir.entryList({ "*.avi", "*.mp4", "*.mov", "*.mkv", "*.wmv", "*.webm" }, QDir::Files);
 
 	for (const QString& fileName : files)
 	{
-		// check the file in video extension (*.mp4)
 		filesList->addVideoFile(dir.absoluteFilePath(fileName).toStdString());
 	}
 

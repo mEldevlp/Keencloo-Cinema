@@ -62,8 +62,9 @@ void MediaPlayer::on_exploreFilesButton_click()
             rapidjson::Document settings_json;
             settings_json.SetObject();
             auto& alloc = settings_json.GetAllocator();
+            const char* path = settings_dir.toStdString().c_str();
 
-            settings_json.AddMember("dir", rapidjson::Value(settings_dir.toStdString().c_str(), alloc), alloc);
+            settings_json.AddMember("dir", rapidjson::Value(path, alloc), alloc);
 
             // Serialize JSON in string buffer
             rapidjson::StringBuffer buffer;
@@ -74,6 +75,8 @@ void MediaPlayer::on_exploreFilesButton_click()
 
             QTextStream out(&settings);
             out << buffer.GetString();
+
+            videos_folder_path = path;
         }
         else
         {
