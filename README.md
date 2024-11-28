@@ -13,10 +13,11 @@ Simplify the lives of movie fans
 </details>
 
 ### Technologies
+- **[CMake](https://cmake.org/download/)**: Latest Release (3.31.1)
 - **[MSVC](https://visualstudio.microsoft.com/ru)**: Visual Studio 2022
-- **[Qt](https://www.qt.io/download-dev)**: Version msvc 6.7.2 or higher.
-- **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: build n7.1 
-- **[RapidJSON](https://github.com/Tencent/rapidjson/releases/tag/v1.1.0)**: release v1.1.0
+- **[Qt](https://www.qt.io/download-qt-installer-oss)**: Version msvc 6.7.2 or higher.
+- **[FFmpeg](https://github.com/BtbN/FFmpeg-Builds/releases/tag/latest)**: Build n7.1 
+- **[RapidJSON](https://github.com/Tencent/rapidjson/releases/tag/v1.1.0)**: Release v1.1.0
 
 ### Install & Build
 Install environment variable Qt path:
