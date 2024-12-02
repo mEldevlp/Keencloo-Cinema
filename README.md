@@ -8,8 +8,8 @@ Simplify the lives of movie fans
 ### Screenshots
 <details>
   <summary>View screens</summary>
-  <img src="https://i.imgur.com/46aX3yQ.png" alt="first screen" width="700"/>
-  <img src="https://i.imgur.com/8J8xgdi.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/0Pcatmq.png" alt="first screen" width="700"/>
+  <img src="https://i.imgur.com/RmBgDe5.png" alt="second screen" width="400"/>
 </details>
 
 ### Technologies
