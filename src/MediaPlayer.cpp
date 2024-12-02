@@ -3,21 +3,33 @@
 MediaPlayer::MediaPlayer(QWidget* parent)
 	: BaseDesignWindow(parent)
 {
+    this->setFocus();
+    this->setFocusPolicy(Qt::NoFocus);
+    
 	videoPlayer = new VideoPlayer(this);
     
 	exploreFilesButton = new QPushButton();
     exploreFilesButton->setIcon(QIcon(APP_DIR + "/rsc/folder_films.ico"));
     exploreFilesButton->setObjectName("exploreFilesButton");
-
+    exploreFilesButton->setFocusPolicy(Qt::NoFocus);
+    
     settingsButton = new QPushButton();
     settingsButton->setIcon(QIcon(APP_DIR + "/rsc/settings.ico"));
     settingsButton->setObjectName("settingsButton");
+    settingsButton->setFocusPolicy(Qt::NoFocus);
     
 	ui->mainLayout->addWidget(videoPlayer);
 	ui->mainLayout->addWidget(settingsButton);
 	ui->topLayout->insertWidget(0, exploreFilesButton);
 	ui->topLayout->insertWidget(1, settingsButton);
     ui->topLayout->insertStretch(2);
+    
+    QShortcut* fullscreen = new QShortcut(QKeySequence(Qt::Key_Escape), videoPlayer->ui->video);
+    connect(fullscreen, &QShortcut::activated, videoPlayer->ui->video, [&]()
+    {
+        videoPlayer->ui->video->setFullScreen(false);
+        videoPlayer->ui->video->setGeometry(0, 0, videoPlayer->ui->videoPlayer->width(), videoPlayer->ui->videoPlayer->height() - 90);
+    });
 
     connect(exploreFilesButton, &QPushButton::clicked, this, &MediaPlayer::on_exploreFilesButton_click);
 }
@@ -62,7 +74,8 @@ void MediaPlayer::on_exploreFilesButton_click()
             rapidjson::Document settings_json;
             settings_json.SetObject();
             auto& alloc = settings_json.GetAllocator();
-            const char* path = settings_dir.toStdString().c_str();
+            std::string pathStdString = settings_dir.toStdString(); // fix dagling
+            const char* path = pathStdString.c_str();
 
             settings_json.AddMember("dir", rapidjson::Value(path, alloc), alloc);
 

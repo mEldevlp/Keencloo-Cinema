@@ -15,6 +15,7 @@ ExploreFilesList::ExploreFilesList(QWidget* parent, const std::string& folder)
 	listView->setModel(filesList);
 	listView->setItemDelegate(new QFilesItemDelegate(listView));
 	listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	listView->setFocusPolicy(Qt::NoFocus);
 
 	QDir dir(folder.empty() ? APP_DIR + "/videos" : folder.c_str());
 
@@ -131,12 +132,10 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	if (option.state & QStyle::State_MouseOver)
 	{
-		// Указываем координаты для заливки
-		QRect highlightRect = opt.rect.adjusted(1, 2, 0, -2); // Например, смещение на 5 пикселей от границ
+		QRect highlightRect = opt.rect.adjusted(1, 2, 0, -2);
 		painter->fillRect(highlightRect, Qt::darkCyan);
 	}
 
-	// Отрисовываем остальную часть элемента
 	QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
 
 	// Set padding for rect

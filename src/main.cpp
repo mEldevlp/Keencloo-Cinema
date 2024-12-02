@@ -30,6 +30,7 @@ int main(int argc, char** argv)
     keencloo_app.setPalette(palette);
     
     MediaPlayer keencloo_main;
+
     keencloo_main.show();
    
     return keencloo_app.exec();

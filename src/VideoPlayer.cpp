@@ -25,14 +25,18 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	videoBarLayout = new QVBoxLayout(videoBar);
 
 	sliderDurationVideo = new QSlider(Qt::Orientation::Horizontal);
+	sliderDurationVideo->setFocusPolicy(Qt::NoFocus);
+
 	buttonsLayout = new QGridLayout();
 	stopPlayButton = new QPushButton();
 	stopPlayButton->setObjectName("stopPlayButton");
 	stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
+	stopPlayButton->setFocusPolicy(Qt::NoFocus);
 
 	volumeButton = new QPushButton();
 	volumeButton->setObjectName("volumeButton");
 	volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_up.ico"));
+	volumeButton->setFocusPolicy(Qt::NoFocus);
 
 	currentTimeVideo = new QLabel("00:00");
 	totalTimeVideo = new QLabel("00:00");
@@ -41,6 +45,7 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	fullscreenButton = new QPushButton();
 	fullscreenButton->setObjectName("fullscreenButton");
 	fullscreenButton->setIcon(QIcon(APP_DIR + "/rsc/fullscreen1.ico"));
+	fullscreenButton->setFocusPolicy(Qt::NoFocus);
 
 	buttonsLayout->addWidget(stopPlayButton, 0, 0);
 	buttonsLayout->addWidget(volumeButton, 0, 1);
@@ -78,7 +83,8 @@ VideoPlayer::VideoPlayer(QWidget* parent)
 	ui->stopPlayButton->installEventFilter(this);
 	ui->fullscreenButton->installEventFilter(this);
 	ui->sliderDurationVideo->installEventFilter(this);
-	
+	ui->video->installEventFilter(this);
+
 	connect(ui->player, &QMediaPlayer::durationChanged, this, &VideoPlayer::duration_changed);
 	connect(ui->player, &QMediaPlayer::positionChanged, this, &VideoPlayer::position_changed);
 }
@@ -88,7 +94,7 @@ VideoPlayer::~VideoPlayer()
 	delete ui;
 }
 
-void VideoPlayer::on_stopPlayButton_clicked(bool check)
+void VideoPlayer::on_stopPlayButton_clicked()
 {
 	if (this->is_paused)
 	{
@@ -106,22 +112,7 @@ void VideoPlayer::on_stopPlayButton_clicked(bool check)
 
 void VideoPlayer::on_fullscreenButton_clicked()
 {
-	// for tests
-	QString FileName = QFileDialog::getOpenFileName(this, tr("Select Video File"), "", tr("MP4 Files (*.mp4)"));
-
-	if (FileName.isEmpty()) return;
-
-	ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - 90);
-	ui->video->setParent(ui->videoPlayer);
-
-	ui->player->setSource(QUrl(FileName));
-
-	ui->sliderDurationVideo->setRange(0, ui->player->duration() / 100);
-
-	ui->video->setVisible(true);
-	ui->video->show();
-
-	ui->player->play();
+	ui->video->setFullScreen(true);
 }
 
 void VideoPlayer::on_sliderDurationVideo_valueChanged(int value)

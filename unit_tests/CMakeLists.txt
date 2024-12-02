@@ -15,6 +15,9 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6Multimedia REQUIRED)
 find_package(Qt6MultimediaWidgets REQUIRED)
 
+# rapidjson
+include_directories(../libs/rapidjson/include)
+
 add_executable(UNIT_TESTS main.cpp Test.cpp Test.h)
 
 target_link_libraries(UNIT_TESTS PRIVATE 

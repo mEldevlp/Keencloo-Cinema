@@ -6,7 +6,7 @@ int main(int argc, char** argv)
 	Test test;
 	TEST_CASE_ADD(test, "Metadata Extracting", [&test]()
 	{
-		std::string file_path = "C:\\Projects_CPP\\Keencloo-Cinema\\build\\RelWithDebInfo\\videos\\video_for_unit_test.mp4";
+		std::string file_path = "C:\\Users\\Daniel\\Desktop\\projects_cpp\\Keencloo-Cinema\\videos\\test.mp4";
 		MetaDataVideo metadata = extract_video_metadata(file_path.c_str());
 		
 		test.assertNotNull(metadata.frame_data.data.data());
@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 
 	TEST_CASE_ADD(test, "Video file", [&test]()
 	{
-		MetaDataVideo metadata = extract_video_metadata("C:\\Projects_CPP\\Keencloo-Cinema\\build\\RelWithDebInfo\\videos\\video_for_unit_test.mp4");
+		MetaDataVideo metadata = extract_video_metadata("C:\\Users\\Daniel\\Desktop\\projects_cpp\\Keencloo-Cinema\\videos\\test.mp4");
 		VideoFile video;
 
 		video.preview = QImage(metadata.frame_data.data.data(),

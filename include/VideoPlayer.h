@@ -42,7 +42,7 @@ private slots:
 	void duration_changed(int64_t duration);
 	void position_changed(int64_t duration);
 	void on_volumeButton_clicked();
-	void on_stopPlayButton_clicked(bool check);
+	void on_stopPlayButton_clicked();
 	void on_fullscreenButton_clicked();
 	void on_sliderDurationVideo_valueChanged(int value);
 

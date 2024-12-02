@@ -12,11 +12,13 @@ void BaseUI::setup_ui(QWidget* parent)
     closeButton = new QPushButton(centralWidget);
     closeButton->setIcon(QIcon(APP_DIR + "/rsc/close_window.ico"));
     closeButton->setObjectName("closeButton");
+    closeButton->setFocusPolicy(Qt::NoFocus);
 
     //fullscreenButton = new QPushButton(centralWidget);
     hideButton = new QPushButton(centralWidget);
     hideButton->setIcon(QIcon(APP_DIR + "/rsc/minimize_window.ico"));
     hideButton->setObjectName("hideButton");
+    hideButton->setFocusPolicy(Qt::NoFocus);
 
     topLayout = new QHBoxLayout();
     //topLayout->addStretch();
