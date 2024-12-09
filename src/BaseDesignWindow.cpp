@@ -14,18 +14,15 @@ void BaseUI::setup_ui(QWidget* parent)
     closeButton->setObjectName("closeButton");
     closeButton->setFocusPolicy(Qt::NoFocus);
 
-    //fullscreenButton = new QPushButton(centralWidget);
     hideButton = new QPushButton(centralWidget);
     hideButton->setIcon(QIcon(APP_DIR + "/rsc/minimize_window.ico"));
     hideButton->setObjectName("hideButton");
     hideButton->setFocusPolicy(Qt::NoFocus);
 
     topLayout = new QHBoxLayout();
-    //topLayout->addStretch();
     topLayout->addWidget(iconLabel);
     topLayout->addStretch();
     topLayout->addWidget(hideButton);
-    //topLayout->addWidget(fullscreenButton);
     topLayout->addWidget(closeButton);
     topLayout->setContentsMargins(10, 10, 10, 0);
     topLayout->setSpacing(10);
@@ -50,6 +47,7 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
     ui->setup_ui(this);
 
     setMinimumSize(DEFAULT_RES);
+
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowIcon(QIcon(APP_DIR + "/rsc/logo_minimal.png"));
@@ -92,18 +90,30 @@ void BaseDesignWindow::paintEvent(QPaintEvent* event)
 
 void BaseDesignWindow::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::LeftButton)
+    // Check that lmb is pressed and cursor is at header of window
+    if (event->button() == Qt::LeftButton && event->position().y() <= this->ui->topLayout->geometry().height())
     {
-        clickPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        this->clickPosition = event->globalPosition().toPoint() - frameGeometry().topLeft();
+        this->isMoving = true;
         event->accept();
     }
 }
 
 void BaseDesignWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    // Check move action is active
+    if (this->isMoving && (event->buttons() & Qt::LeftButton))
     {
-        move(event->globalPosition().toPoint() - clickPosition);
+        move(event->globalPosition().toPoint() - this->clickPosition);
+        event->accept();
+    }
+}
+
+void BaseDesignWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        this->isMoving = false;
         event->accept();
     }
 }

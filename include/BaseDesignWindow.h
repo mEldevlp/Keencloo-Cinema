@@ -29,11 +29,12 @@ public:
 protected:
 	BaseUI* ui = nullptr;
 	QPoint clickPosition;
+	bool isMoving = false;
 
 	void paintEvent(QPaintEvent* event) override;
 
 	// move window
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
-
+	void mouseReleaseEvent(QMouseEvent* event) override;
 };

@@ -47,7 +47,6 @@ void MediaPlayer::openVideo(QString FileName) const
     ui->video->setParent(ui->videoPlayer);
 
     ui->player->setSource(QUrl(FileName));
-
     ui->sliderDurationVideo->setRange(0, ui->player->duration() / 100);
 
     ui->video->setVisible(true);

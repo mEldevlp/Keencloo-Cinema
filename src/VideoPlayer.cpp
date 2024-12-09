@@ -96,29 +96,35 @@ VideoPlayer::~VideoPlayer()
 
 void VideoPlayer::on_stopPlayButton_clicked()
 {
-	if (this->is_paused)
+	if (!ui->player->source().isEmpty())
 	{
-		ui->player->play();
-		ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
-	}
-	else
-	{
-		ui->player->pause();
-		ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/pause.ico"));
-	}
+		if (this->is_paused)
+		{
+			ui->player->play();
+			ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
+		}
+		else
+		{
+			ui->player->pause();
+			ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/pause.ico"));
+		}
 
-	this->is_paused = !this->is_paused;
+		this->is_paused = !this->is_paused;
+	}
 }
 
 void VideoPlayer::on_fullscreenButton_clicked()
 {
-	ui->video->setFullScreen(true);
+	if (!ui->player->source().isEmpty())
+	{
+		ui->video->setFullScreen(true);
+	}
 }
 
 void VideoPlayer::on_sliderDurationVideo_valueChanged(int value)
 {
 	ui->sliderDurationVideo->setValue(value);
-	ui->player->setPosition(static_cast<qint64>(ui->sliderDurationVideo->value()) * 1000);
+	ui->player->setPosition(static_cast<qint64>(ui->sliderDurationVideo->value()) * 1'000);
 }
 
 bool VideoPlayer::eventFilter(QObject* watched, QEvent* event)
@@ -150,10 +156,10 @@ void VideoPlayer::position_changed(int64_t duration)
 {
 	int actual_duration = duration / 1000;
 
-	if (!ui->sliderDurationVideo->isSliderDown())
-	{
-		ui->sliderDurationVideo->setValue(actual_duration);
-	}
+	// fix audio lag
+	ui->sliderDurationVideo->blockSignals(true); // brilliant
+	ui->sliderDurationVideo->setValue(actual_duration);
+	ui->sliderDurationVideo->blockSignals(false);
 
 	this->update_duration(actual_duration);
 }
@@ -173,16 +179,17 @@ void VideoPlayer::update_duration(int64_t duration)
 
 void VideoPlayer::on_volumeButton_clicked()
 {
-	if (!this->is_muted)
+	if (!ui->player->source().isEmpty())
 	{
-		this->is_muted = true;
-		// change icon muted
-	}
-	else
-	{
-		this->is_muted = false;
-		// change icon unmute
-	}
+		if (!this->is_muted)
+		{
+			ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_up.ico"));
+		}
+		else
+		{
+			ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_off.ico"));
+		}
 
-	ui->audio->setMuted(this->is_muted);
+		ui->audio->setMuted(this->is_muted = !this->is_muted);
+	}
 }
