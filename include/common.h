@@ -6,6 +6,7 @@
 #include <vector>
 #include <filesystem>
 #include <sys/stat.h>
+#include <string>
 #pragma endregion
 
 #pragma region("QT")

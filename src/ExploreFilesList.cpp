@@ -105,7 +105,6 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 
 	VideoFile video;
 
-	// TODO(make a preview icon)
 	video.preview = QImage(metadata.frame_data.data.data(),
 		metadata.frame_data.resolution.width,
 		metadata.frame_data.resolution.height,

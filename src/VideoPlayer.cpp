@@ -44,7 +44,7 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 
 	fullscreenButton = new QPushButton();
 	fullscreenButton->setObjectName("fullscreenButton");
-	fullscreenButton->setIcon(QIcon(APP_DIR + "/rsc/fullscreen1.ico"));
+	fullscreenButton->setIcon(QIcon(APP_DIR + "/rsc/fullscreen.ico"));
 	fullscreenButton->setFocusPolicy(Qt::NoFocus);
 
 	buttonsLayout->addWidget(stopPlayButton, 0, 0);
@@ -181,14 +181,7 @@ void VideoPlayer::on_volumeButton_clicked()
 {
 	if (!ui->player->source().isEmpty())
 	{
-		if (!this->is_muted)
-		{
-			ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_up.ico"));
-		}
-		else
-		{
-			ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_off.ico"));
-		}
+		ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume" + (this->is_muted ? "_up.ico" : "_off.ico")));
 
 		ui->audio->setMuted(this->is_muted = !this->is_muted);
 	}
