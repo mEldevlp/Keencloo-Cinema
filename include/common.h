@@ -37,6 +37,8 @@ extern "C" {
 #include <rapidjson/stringbuffer.h>
 #pragma endregion
 
+#define VERSION "0.11.0"
+
 #define KEENCLOO_DEBUG
 
 #define APP_DIR QCoreApplication::applicationDirPath()

@@ -13,6 +13,25 @@ const std::vector<QString> g_require_res = {
 int main(int argc, char** argv)
 {
     QApplication keencloo_app(argc, argv);
+
+    keencloo_app.setStyle(QStyleFactory::create("Fusion"));
+
+    QPalette palette;
+    palette.setColor(QPalette::Window, Qt::white);
+    palette.setColor(QPalette::WindowText, Qt::black);
+    palette.setColor(QPalette::Base, Qt::white);
+    palette.setColor(QPalette::AlternateBase, Qt::lightGray);
+    palette.setColor(QPalette::ToolTipBase, Qt::white);
+    palette.setColor(QPalette::ToolTipText, Qt::black);
+    palette.setColor(QPalette::Text, Qt::black);
+    palette.setColor(QPalette::Button, Qt::lightGray);
+    palette.setColor(QPalette::ButtonText, Qt::black);
+    palette.setColor(QPalette::BrightText, Qt::red);
+    palette.setColor(QPalette::Highlight, Qt::blue);
+    palette.setColor(QPalette::HighlightedText, Qt::white);
+
+    keencloo_app.setPalette(palette);
+
     for (const auto& res : g_require_res)
     {
         QString path = APP_DIR + "/rsc/" + res;
@@ -32,8 +51,6 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    keencloo_app.setStyle(QStyleFactory::create("Fusion"));
-
     QFile style(style_path);
    
     if (style.open(QFile::ReadOnly))
@@ -42,24 +59,7 @@ int main(int argc, char** argv)
         style.close();
     }
     
-    QPalette palette;
-    palette.setColor(QPalette::Window, Qt::white);        
-    palette.setColor(QPalette::WindowText, Qt::black);    
-    palette.setColor(QPalette::Base, Qt::white);          
-    palette.setColor(QPalette::AlternateBase, Qt::lightGray); 
-    palette.setColor(QPalette::ToolTipBase, Qt::white);   
-    palette.setColor(QPalette::ToolTipText, Qt::black);   
-    palette.setColor(QPalette::Text, Qt::black);          
-    palette.setColor(QPalette::Button, Qt::lightGray);    
-    palette.setColor(QPalette::ButtonText, Qt::black);    
-    palette.setColor(QPalette::BrightText, Qt::red);    
-    palette.setColor(QPalette::Highlight, Qt::blue);      
-    palette.setColor(QPalette::HighlightedText, Qt::white); 
-
-    keencloo_app.setPalette(palette);
-    
     MediaPlayer keencloo_main;
-
     keencloo_main.show();
    
     return keencloo_app.exec();

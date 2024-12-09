@@ -73,17 +73,17 @@ Keencloo-Cinema\build\Release\videos\
 - [ ] To develop own video widget
 - [ ] Should remember the length of the viewed video, i.e. store the current viewing time somewhere
 - [ ] When closing, remember in the paragraph above
-- [ ] Full screen capability
+- [x] Full screen capability
 - [ ] Volume control
 - [x] Pause/Playback
 - [ ] The video bar should be on top of the video (if possible)
 - [ ] After watching 5 seconds of the video, then the video bar is hidden
 - [ ] When moving the mouse while watching a video (the focus should be in the window), the video bar is displayed
-- [ ] Customize the video bar
+- [x] Customize the video bar
 - [x] Run through a list and an abstract model
 - [ ] There should be a video file name, the length of the video, and how much has already been watched, if not watched, then do not show it or highlight it separately somehow
 - [x] Hover effects at icons in main window
-- [ ] Hover effects when pointing at elements
+- [x] Hover effects when pointing at elements
 - [x] When clicked, this video opens
 - [ ] Settings window
 - [ ] Drag and drop video in video player
