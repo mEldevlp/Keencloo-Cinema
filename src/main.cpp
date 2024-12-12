@@ -1,6 +1,8 @@
 #include "Keencloo.h"
 
-const std::vector<QString> g_require_res = {
+int main(int argc, char** argv)
+{
+    const std::vector<QString> require_res = {
     "close_window.ico",         "folder_films.ico",
     "folder_films_hover.ico",   "fullscreen.ico",
     "logo_full.png",            "logo_minimal.png",
@@ -8,10 +10,8 @@ const std::vector<QString> g_require_res = {
     "play.ico",                 "settings.ico",
     "settings_hover.ico",       "volume_down.ico",
     "volume_off.ico",           "volume_up.ico"
-};
+    };
 
-int main(int argc, char** argv)
-{
     QApplication keencloo_app(argc, argv);
 
     keencloo_app.setStyle(QStyleFactory::create("Fusion"));
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
     keencloo_app.setPalette(palette);
 
-    for (const auto& res : g_require_res)
+    for (const auto& res : require_res)
     {
         QString path = APP_DIR + "/rsc/" + res;
 

@@ -30,12 +30,12 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	buttonsLayout = new QGridLayout();
 	stopPlayButton = new QPushButton();
 	stopPlayButton->setObjectName("stopPlayButton");
-	stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
+	stopPlayButton->setIcon(QIcon(RSC_DIR + "play.ico"));
 	stopPlayButton->setFocusPolicy(Qt::NoFocus);
 
 	volumeButton = new QPushButton();
 	volumeButton->setObjectName("volumeButton");
-	volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume_up.ico"));
+	volumeButton->setIcon(QIcon(RSC_DIR + "volume_up.ico"));
 	volumeButton->setFocusPolicy(Qt::NoFocus);
 
 	currentTimeVideo = new QLabel("00:00");
@@ -44,7 +44,7 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 
 	fullscreenButton = new QPushButton();
 	fullscreenButton->setObjectName("fullscreenButton");
-	fullscreenButton->setIcon(QIcon(APP_DIR + "/rsc/fullscreen.ico"));
+	fullscreenButton->setIcon(QIcon(RSC_DIR + "fullscreen.ico"));
 	fullscreenButton->setFocusPolicy(Qt::NoFocus);
 
 	buttonsLayout->addWidget(stopPlayButton, 0, 0);
@@ -101,12 +101,12 @@ void VideoPlayer::on_stopPlayButton_clicked()
 		if (this->is_paused)
 		{
 			ui->player->play();
-			ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/play.ico"));
+			ui->stopPlayButton->setIcon(QIcon(RSC_DIR + "play.ico"));
 		}
 		else
 		{
 			ui->player->pause();
-			ui->stopPlayButton->setIcon(QIcon(APP_DIR + "/rsc/pause.ico"));
+			ui->stopPlayButton->setIcon(QIcon(RSC_DIR + "pause.ico"));
 		}
 
 		this->is_paused = !this->is_paused;
@@ -181,7 +181,7 @@ void VideoPlayer::on_volumeButton_clicked()
 {
 	if (!ui->player->source().isEmpty())
 	{
-		ui->volumeButton->setIcon(QIcon(APP_DIR + "/rsc/volume" + (this->is_muted ? "_up.ico" : "_off.ico")));
+		ui->volumeButton->setIcon(QIcon(RSC_DIR + "volume" + (this->is_muted ? "_up.ico" : "_off.ico")));
 
 		ui->audio->setMuted(this->is_muted = !this->is_muted);
 	}

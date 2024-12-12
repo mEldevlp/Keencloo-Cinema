@@ -17,7 +17,8 @@ ExploreFilesList::ExploreFilesList(QWidget* parent, const std::string& folder)
 	listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	listView->setFocusPolicy(Qt::NoFocus);
 
-	QDir dir(folder.empty() ? APP_DIR + "/videos" : folder.c_str());
+	//QDir dir(folder.empty() ? APP_DIR + "/videos" : folder.c_str());
+	QDir dir(folder.c_str());
 
 	QStringList files = dir.entryList({ "*.avi", "*.mp4", "*.mov", "*.mkv", "*.wmv", "*.webm" }, QDir::Files);
 
@@ -51,18 +52,24 @@ QListFiles::QListFiles(QObject* parent)
 
 int QListFiles::rowCount(const QModelIndex& parent) const
 {
-	return static_cast<int>(videoFiles.size());
+	return videoFiles.empty() ? 1 : static_cast<int>(videoFiles.size());
 }
 
 QVariant QListFiles::data(const QModelIndex& index, int role) const
 {
-	if (!index.isValid() || index.row() >= videoFiles.size())
+	if (!index.isValid() || index.row() >= (videoFiles.empty() ? 1 : videoFiles.size()))
+	{
 		return QVariant();
+	}
 
 	switch (role)
 	{
-		case Qt::DisplayRole: return QVariant::fromValue(videoFiles[index.row()]);
-		default:			  return QVariant();
+	case Qt::DisplayRole:
+		return QVariant::fromValue(videoFiles.empty() && index.row() == 0
+			? std::string("empty")
+			: videoFiles[index.row()]);
+	default:
+		return QVariant();
 	}
 }
 
@@ -99,7 +106,20 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 {
 	painter->save();
 
+	QStyleOptionViewItem opt = option;
+	initStyleOption(&opt, index);
+
 	std::string path = index.data(Qt::DisplayRole).value<std::string>();
+
+	// Check fiction value if vector is empty
+	if (path == "empty")
+	{
+		painter->setFont(QFont("Arial", 15, QFont::Light));
+		painter->drawText(opt.rect, Qt::AlignHCenter | Qt::AlignVCenter,
+			QString("No video yet :("));
+		painter->restore();
+		return;
+	}
 
 	MetaDataVideo metadata = extract_video_metadata(path.c_str());
 
@@ -125,9 +145,6 @@ void QFilesItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& op
 	video.fps = QString::number(static_cast<int>(metadata.fps));
 	
 	// ---------
-
-	QStyleOptionViewItem opt = option;
-	initStyleOption(&opt, index);
 
 	if (option.state & QStyle::State_MouseOver)
 	{
@@ -204,7 +221,7 @@ QSize QFilesItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QMo
 	return QSize(option.rect.width(), 100);
 }
 
-QString VideoFile::convertToByte(unsigned long long bit, bool isDecimal)
+QString VideoFile::convertToByte(uint64_t bit, bool isDecimal)
 {
 	int step = 0;
 	uint64_t unit = 1;

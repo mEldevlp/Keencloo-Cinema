@@ -42,6 +42,7 @@ extern "C" {
 #define KEENCLOO_DEBUG
 
 #define APP_DIR QCoreApplication::applicationDirPath()
+#define RSC_DIR APP_DIR + "/rsc/"
 
 #define DEF_WIDTH 1280
 #define DEF_HEIGHT 720

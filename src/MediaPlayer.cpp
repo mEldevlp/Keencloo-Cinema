@@ -9,12 +9,12 @@ MediaPlayer::MediaPlayer(QWidget* parent)
 	videoPlayer = new VideoPlayer(this);
     
 	exploreFilesButton = new QPushButton();
-    exploreFilesButton->setIcon(QIcon(APP_DIR + "/rsc/folder_films.ico"));
+    exploreFilesButton->setIcon(QIcon(RSC_DIR + "folder_films.ico"));
     exploreFilesButton->setObjectName("exploreFilesButton");
     exploreFilesButton->setFocusPolicy(Qt::NoFocus);
     
     settingsButton = new QPushButton();
-    settingsButton->setIcon(QIcon(APP_DIR + "/rsc/settings.ico"));
+    settingsButton->setIcon(QIcon(RSC_DIR + "settings.ico"));
     settingsButton->setObjectName("settingsButton");
     settingsButton->setFocusPolicy(Qt::NoFocus);
     

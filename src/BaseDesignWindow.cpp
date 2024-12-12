@@ -5,17 +5,17 @@ void BaseUI::setup_ui(QWidget* parent)
     centralWidget = new QWidget(parent);
     iconLabel = new QLabel(centralWidget); // logo
     
-    QPixmap iconPixmap(QString(APP_DIR + "/rsc/logo_full.png"));
+    QPixmap iconPixmap(QString(RSC_DIR + "logo_full.png"));
      
     iconLabel->setPixmap(iconPixmap.scaled(120, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     closeButton = new QPushButton(centralWidget);
-    closeButton->setIcon(QIcon(APP_DIR + "/rsc/close_window.ico"));
+    closeButton->setIcon(QIcon(RSC_DIR + "close_window.ico"));
     closeButton->setObjectName("closeButton");
     closeButton->setFocusPolicy(Qt::NoFocus);
 
     hideButton = new QPushButton(centralWidget);
-    hideButton->setIcon(QIcon(APP_DIR + "/rsc/minimize_window.ico"));
+    hideButton->setIcon(QIcon(RSC_DIR + "minimize_window.ico"));
     hideButton->setObjectName("hideButton");
     hideButton->setFocusPolicy(Qt::NoFocus);
 
@@ -50,7 +50,7 @@ BaseDesignWindow::BaseDesignWindow(QWidget* parent)
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     setAttribute(Qt::WA_TranslucentBackground);
-    setWindowIcon(QIcon(APP_DIR + "/rsc/logo_minimal.png"));
+    setWindowIcon(QIcon(RSC_DIR + "logo_minimal.png"));
 
     setCentralWidget(ui->centralWidget);
 
