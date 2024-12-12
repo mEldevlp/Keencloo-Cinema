@@ -37,7 +37,7 @@ extern "C" {
 #include <rapidjson/stringbuffer.h>
 #pragma endregion
 
-#define VERSION "0.11.0"
+#define VERSION "0.14.0"
 
 #define KEENCLOO_DEBUG
 

@@ -7,7 +7,7 @@ MediaPlayer::MediaPlayer(QWidget* parent)
     this->setFocusPolicy(Qt::NoFocus);
     
 	videoPlayer = new VideoPlayer(this);
-    
+
 	exploreFilesButton = new QPushButton();
     exploreFilesButton->setIcon(QIcon(RSC_DIR + "folder_films.ico"));
     exploreFilesButton->setObjectName("exploreFilesButton");
@@ -23,12 +23,15 @@ MediaPlayer::MediaPlayer(QWidget* parent)
 	ui->topLayout->insertWidget(0, exploreFilesButton);
 	ui->topLayout->insertWidget(1, settingsButton);
     ui->topLayout->insertStretch(2);
-    
+
+    //videoPlayer->ui->videoBar;
     QShortcut* fullscreen = new QShortcut(QKeySequence(Qt::Key_Escape), videoPlayer->ui->video);
     connect(fullscreen, &QShortcut::activated, videoPlayer->ui->video, [&]()
     {
-        videoPlayer->ui->video->setFullScreen(false);
-        videoPlayer->ui->video->setGeometry(0, 0, videoPlayer->ui->videoPlayer->width(), videoPlayer->ui->videoPlayer->height() - 90);
+        if (videoPlayer->ui->video->isFullScreen())
+        {
+            videoPlayer->on_fullscreenButton_clicked();
+        }
     });
 
     connect(exploreFilesButton, &QPushButton::clicked, this, &MediaPlayer::on_exploreFilesButton_click);

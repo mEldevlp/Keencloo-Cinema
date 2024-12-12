@@ -70,13 +70,13 @@ Keencloo-Cinema\build\Release\videos\
 - [x] The "close" button should be red when pointing
 - [x] There should be a logo in the middle of the window
 - [x] Select the window color palette (#27c4c3, #ff2e2e, #990012, rgb: 192, 192, 192)
-- [ ] To develop own video widget
+- [x] To develop own video widget
 - [ ] Should remember the length of the viewed video, i.e. store the current viewing time somewhere
 - [ ] When closing, remember in the paragraph above
 - [x] Full screen capability
-- [ ] Volume control
+- [x] Volume control
 - [x] Pause/Playback
-- [ ] The video bar should be on top of the video (if possible)
+- [x] The video bar should be on top of the video
 - [ ] After watching 5 seconds of the video, then the video bar is hidden
 - [ ] When moving the mouse while watching a video (the focus should be in the window), the video bar is displayed
 - [x] Customize the video bar

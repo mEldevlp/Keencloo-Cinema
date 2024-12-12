@@ -9,6 +9,7 @@ class MediaPlayer : public BaseDesignWindow
 	Q_OBJECT
 
 friend class ExploreFilesList;
+friend class VideoPlayer;
 
 public:
 	explicit MediaPlayer(QWidget* parent = nullptr);
