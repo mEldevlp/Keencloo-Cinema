@@ -7,6 +7,7 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	player = new QMediaPlayer();
 	audio = new QAudioOutput();
 	video = new QVideoWidget();
+	video->setMouseTracking(true);
 	
 	player->setAudioOutput(audio);
 	player->setVideoOutput(video);
@@ -68,8 +69,6 @@ void VideoPlayerUI::setup_ui(QWidget* parent)
 	videoBarLayout->addLayout(buttonsLayout);
 
 	mainLayout->addWidget(videoPlayer);
-
-
 }
 
 VideoPlayerUI::~VideoPlayerUI()
@@ -95,18 +94,18 @@ VideoPlayer::VideoPlayer(QWidget* parent)
 	ui->volumeButton->installEventFilter(this);
 	ui->stopPlayButton->installEventFilter(this);
 	ui->fullscreenButton->installEventFilter(this);
-	ui->sliderDurationVideo->installEventFilter(this);
 	ui->video->installEventFilter(this);
+	ui->video->setAttribute(Qt::WA_Hover);
 
 	ui->videoBar->setAttribute(Qt::WA_TranslucentBackground); // Поддержка прозрачного фона
 	ui->videoBar->setAttribute(Qt::WA_ShowWithoutActivating); // Не перехватывать фокус
-
-	connect(hideBarTimer, &QTimer::timeout, [&]() {
-		if (ui->video->isFullScreen()) ui->videoBar->hide();
-	});
-
+	
 	connect(ui->player, &QMediaPlayer::durationChanged, this, &VideoPlayer::duration_changed);
 	connect(ui->player, &QMediaPlayer::positionChanged, this, &VideoPlayer::position_changed);
+	connect(hideBarTimer, &QTimer::timeout, [this]() {
+		ui->videoBar->hide();
+		QApplication::setOverrideCursor(Qt::BlankCursor);
+	});
 }
 
 VideoPlayer::~VideoPlayer()
@@ -140,8 +139,9 @@ void VideoPlayer::on_fullscreenButton_clicked()
 		if (!ui->video->isFullScreen())
 		{
 			ui->video->setFullScreen(true);
-			ui->videoBar->setStyleSheet("#videoBar { background-color: rgba(0, 0, 0, 140); border: none;}");
-
+			
+			ui->videoBar->setStyleSheet("#videoBar { background-color: qlineargradient(spread : pad, x1 : 0, y1 : 1, x2 : 0, y2 : 0, stop : 0 rgba(0, 0, 0, 255), stop : 1 rgba(0, 0, 0, 0)); border: none;}");
+			
 			// Перенос videoBar поверх QVideoWidget
 			ui->videoBar->setParent(nullptr); // Отсоединяем от родителя
 			ui->videoBar->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint); // Убираем рамку и делаем всегда сверху
@@ -153,15 +153,19 @@ void VideoPlayer::on_fullscreenButton_clicked()
 				videoGeometry.width(),
 				ui->videoBar->height());
 			ui->videoBar->show();
+			ui->video->setFocus();
 		}
 		else
 		{
+			hideBarTimer->stop();
+			QApplication::setOverrideCursor(Qt::ArrowCursor);
 			ui->video->setFullScreen(false);
-
+			
 			// Вернуть videoBar в основной макет
+			ui->videoBar->show();
 			ui->videoBar->setParent(this);
 			ui->videoBar->setStyleSheet("#videoBar { background-color: rgba(0, 0, 0);}");
-			ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - 90);
+			ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - ui->videoBar->height());
 			ui->mainLayout->addWidget(ui->videoBar);
 		}
 	}
@@ -207,19 +211,27 @@ bool VideoPlayer::eventFilter(QObject* watched, QEvent* event)
 			return true;
 		}
 	}
-
-	return QWidget::eventFilter(watched, event);
-}
-
-void VideoPlayer::mouseMoveEvent(QMouseEvent* event)
-{
-	if (ui->video->isFullScreen())
+	else if (watched->isWidgetType() && qobject_cast<QVideoWidget*>(watched))
 	{
-		ui->videoBar->show();
-		hideBarTimer->start(2000);
+		if (event->type() == QEvent::HoverMove)
+		{
+			if (ui->video->isFullScreen())
+			{
+				if (ui->videoBar->isVisible())
+				{
+					hideBarTimer->stop();
+					hideBarTimer->start(3000);
+				}
+				else
+				{
+					QApplication::setOverrideCursor(Qt::ArrowCursor);
+					ui->videoBar->show();
+				}
+			}
+		}
 	}
 
-	QWidget::mouseMoveEvent(event);
+	return QWidget::eventFilter(watched, event);
 }
 
 void VideoPlayer::duration_changed(int64_t duration)

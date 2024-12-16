@@ -51,7 +51,6 @@ private slots:
 protected:
 	void resizeEvent(QResizeEvent* event) override;
 	bool eventFilter(QObject* watched, QEvent* event) override;
-	void mouseMoveEvent(QMouseEvent* event) override;
 
 	VideoPlayerUI* ui;
 	int64_t duration = 0ll;

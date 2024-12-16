@@ -24,14 +24,10 @@ MediaPlayer::MediaPlayer(QWidget* parent)
 	ui->topLayout->insertWidget(1, settingsButton);
     ui->topLayout->insertStretch(2);
 
-    //videoPlayer->ui->videoBar;
     QShortcut* fullscreen = new QShortcut(QKeySequence(Qt::Key_Escape), videoPlayer->ui->video);
     connect(fullscreen, &QShortcut::activated, videoPlayer->ui->video, [&]()
     {
-        if (videoPlayer->ui->video->isFullScreen())
-        {
-            videoPlayer->on_fullscreenButton_clicked();
-        }
+        if (videoPlayer->ui->video->isFullScreen()) videoPlayer->on_fullscreenButton_clicked();
     });
 
     connect(exploreFilesButton, &QPushButton::clicked, this, &MediaPlayer::on_exploreFilesButton_click);

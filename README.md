@@ -77,8 +77,8 @@ Keencloo-Cinema\build\Release\videos\
 - [x] Volume control
 - [x] Pause/Playback
 - [x] The video bar should be on top of the video
-- [ ] After watching 5 seconds of the video, then the video bar is hidden
-- [ ] When moving the mouse while watching a video (the focus should be in the window), the video bar is displayed
+- [x] After watching 3 seconds of the video, then the video bar is hidden
+- [x] When moving the mouse while watching a video (the focus should be in the window), the video bar is displayed
 - [x] Customize the video bar
 - [x] Run through a list and an abstract model
 - [ ] There should be a video file name, the length of the video, and how much has already been watched, if not watched, then do not show it or highlight it separately somehow
