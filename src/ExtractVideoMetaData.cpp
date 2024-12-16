@@ -84,7 +84,7 @@ MetaDataVideo extract_video_metadata(const char* file)
     }
 
     int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, codecContext->width, codecContext->height, 1);
-    //uint8_t* buffer = reinterpret_cast<uint8_t*>(av_malloc(numBytes * sizeof(uint8_t)));
+
     std::vector<uint8_t> buffer(numBytes);
 
     struct SwsContext* swsContext = sws_getContext(codecContext->width, codecContext->height, codecContext->pix_fmt,
@@ -127,7 +127,7 @@ MetaDataVideo extract_video_metadata(const char* file)
                     metadata.frame_data.resolution.width = codecContext->width;
                     metadata.frame_data.resolution.height = codecContext->height;
                     metadata.frame_data.channels = 3; // RGB
-                    //metadata.frame_data.data.assign(frameRGB->data[0], frameRGB->data[0] + numBytes);
+
                     metadata.frame_data.data = buffer;
                     break;
                 }

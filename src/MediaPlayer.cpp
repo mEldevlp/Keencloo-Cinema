@@ -42,7 +42,7 @@ void MediaPlayer::openVideo(QString FileName) const
 {
     auto ui = videoPlayer->ui;
 
-    ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - 90);
+    ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - ui->videoBar->height() - 10);
     ui->video->setParent(ui->videoPlayer);
 
     ui->player->setSource(QUrl(FileName));

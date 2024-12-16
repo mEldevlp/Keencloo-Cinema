@@ -1,6 +1,12 @@
-#videoPlayer, #videoBar
+#videoBar
 {
     border: 2px solid #000000;
+}
+
+#label_videobar
+{
+	color: black;
+	font-size: 16px;
 }
 
 QListView
@@ -72,10 +78,10 @@ QPushButton:hover, #hideButton:hover
 
 #exploreFilesButton:hover
 {
-	icon: url(./../rsc/folder_films_hover.ico);
+	icon: url(./rsc/folder_films_hover.ico);
 }
 
 #settingsButton:hover
 {
-	icon: url(./../rsc/settings_hover.ico);
+	icon: url(./rsc/settings_hover.ico);
 }

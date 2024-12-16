@@ -97,25 +97,31 @@ include_directories(libs/rapidjson/include)
 
 # Copy DLL file into dir with execute file (win only)
 if(WIN32)
-    add_custom_command(TARGET Keencloo POST_BUILD
-        # Folder for video
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:Keencloo>/videos"
-		
-		# Folder for resources
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:Keencloo>/rsc"
-		
-		# For all builds
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-        "${CMAKE_SOURCE_DIR}/build/rsc"
-		
-		# For all styles
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-        "$<TARGET_FILE_DIR:Keencloo>/styles"
-		
-        # Copy the DLLs to the output directory
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    function(copy_resources target source destination)
+        foreach(file ${source})
+            add_custom_command(TARGET ${target} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                "${file}"
+                "${destination}"
+            )
+        endforeach()
+    endfunction()
+
+    # Create directories
+    foreach(dir "$<TARGET_FILE_DIR:Keencloo>/videos"
+                 "$<TARGET_FILE_DIR:Keencloo>/rsc"
+                 "$<TARGET_FILE_DIR:Keencloo>/rsc/fullscreen"
+                 "$<TARGET_FILE_DIR:Keencloo>/styles"
+                 "${CMAKE_SOURCE_DIR}/build/rsc"
+                 "${CMAKE_SOURCE_DIR}/build/rsc/fullscreen")
+				 
+        add_custom_command(TARGET Keencloo POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${dir}"
+        )
+    endforeach()
+
+    # Copy DLLs
+    set(FFMPEG_DLLS
         "${FFMPEG_BIN_DIR}/avcodec-61.dll"
         "${FFMPEG_BIN_DIR}/avdevice-61.dll"
         "${FFMPEG_BIN_DIR}/avfilter-10.dll"
@@ -124,36 +130,46 @@ if(WIN32)
         "${FFMPEG_BIN_DIR}/postproc-58.dll"
         "${FFMPEG_BIN_DIR}/swresample-5.dll"
         "${FFMPEG_BIN_DIR}/swscale-8.dll"
-        $<TARGET_FILE_DIR:Keencloo>
-		
-		# Copy the icons for bin
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
-        "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
-        "${CMAKE_SOURCE_DIR}/rsc/close_window.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/folder_films.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/folder_films_hover.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/minimize_window.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
-		"$<TARGET_FILE_DIR:Keencloo>/rsc"
-		
-		# for all debug
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
-        "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
-        "${CMAKE_SOURCE_DIR}/rsc/close_window.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/folder_films.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/folder_films_hover.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/minimize_window.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
-        "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
-		"${CMAKE_SOURCE_DIR}/build/rsc"
-		
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/styles/style.qss"
-		"$<TARGET_FILE_DIR:Keencloo>/styles"
     )
+    copy_resources(Keencloo "${FFMPEG_DLLS}" "$<TARGET_FILE_DIR:Keencloo>")
+
+    # Copy icons and resources
+    set(RSC_FILES
+        "${CMAKE_SOURCE_DIR}/rsc/logo_full.png"
+        "${CMAKE_SOURCE_DIR}/rsc/logo_minimal.png"
+        "${CMAKE_SOURCE_DIR}/rsc/close_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/folder_films_hover.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/minimize_window.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/settings_hover.ico"
+		"${CMAKE_SOURCE_DIR}/rsc/fullscreen.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/pause.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/play.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/screenminimaze.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/volume_down.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/volume_off.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/volume_up.ico"
+    )
+	
+    set(FULLSCREEN_FILES
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/fullscreen.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/pause.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/play.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/screenminimaze.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/volume_down.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/volume_off.ico"
+        "${CMAKE_SOURCE_DIR}/rsc/fullscreen/volume_up.ico"
+    )
+	
+	# Copy resources
+    copy_resources(Keencloo "${FULLSCREEN_FILES}" 	"$<TARGET_FILE_DIR:Keencloo>/rsc/fullscreen")
+	copy_resources(Keencloo "${RSC_FILES}" 			"$<TARGET_FILE_DIR:Keencloo>/rsc")
+	copy_resources(Keencloo "${FULLSCREEN_FILES}" 	"${CMAKE_SOURCE_DIR}/build/rsc/fullscreen")
+    copy_resources(Keencloo "${RSC_FILES}" 			"${CMAKE_SOURCE_DIR}/build/rsc")
+
+    # Copy styles
+    copy_resources(Keencloo "${CMAKE_SOURCE_DIR}/styles/style.qss" "$<TARGET_FILE_DIR:Keencloo>/styles")
 endif()
 
 # Set start-up project as Keencloo but now all_build

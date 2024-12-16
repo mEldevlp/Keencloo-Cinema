@@ -2,18 +2,18 @@
 
 int main(int argc, char** argv)
 {
-    const std::vector<QString> require_res = {
-    "close_window.ico",         "folder_films.ico",
-    "folder_films_hover.ico",   "fullscreen.ico",
-    "logo_full.png",            "logo_minimal.png",
-    "minimize_window.ico",      "pause.ico",
-    "play.ico",                 "settings.ico",
-    "settings_hover.ico",       "volume_down.ico",
-    "volume_off.ico",           "volume_up.ico"
-    };
-
+    //const std::vector<QString> require_res = {
+    //"close_window.ico",         "folder_films.ico",
+    //"folder_films_hover.ico",   "fullscreen.ico",
+    //"logo_full.png",            "logo_minimal.png",
+    //"minimize_window.ico",      "pause.ico",
+    //"play.ico",                 "settings.ico",
+    //"settings_hover.ico",       "volume_down.ico",
+    //"volume_off.ico",           "volume_up.ico"
+    //};
+    
     QApplication keencloo_app(argc, argv);
-
+    
     keencloo_app.setStyle(QStyleFactory::create("Fusion"));
 
     QPalette palette;
@@ -31,17 +31,17 @@ int main(int argc, char** argv)
     palette.setColor(QPalette::HighlightedText, Qt::white);
 
     keencloo_app.setPalette(palette);
+    
+    //for (const auto& res : require_res)
+    //{
+    //    QString path = RSC_DIR + res;
 
-    for (const auto& res : require_res)
-    {
-        QString path = APP_DIR + "/rsc/" + res;
-
-        if (!QFile::exists(path))
-        {
-            QMessageBox::critical(nullptr, "Missing Files", "Missing file:\n" + path);
-            return 1;
-        }
-    }
+    //    if (!QFile::exists(path))
+    //    {
+    //        QMessageBox::critical(nullptr, "Missing Files", "Missing file:\n" + path);
+    //        return 1;
+    //    }
+    //}
     
     QString style_path = APP_DIR + "/styles/style.qss";
 
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
         QMessageBox::critical(nullptr, "Missing Files", "Missing file:\n" + style_path);
         return 1;
     }
-
+    
     QFile style(style_path);
    
     if (style.open(QFile::ReadOnly))
