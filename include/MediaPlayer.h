@@ -14,7 +14,7 @@ friend class VideoPlayer;
 public:
 	explicit MediaPlayer(QWidget* parent = nullptr);
 	~MediaPlayer();
-	void openVideo(QString FileName) const;
+	void openVideo(QString fileName, QString hash, int deepview);
 
 private slots:
 	void on_exploreFilesButton_click();
@@ -26,4 +26,5 @@ public:
 	VideoPlayer* videoPlayer = nullptr;
 	QPushButton* exploreFilesButton = nullptr;
 	QPushButton* settingsButton = nullptr;
+	QString hash_video;
 };

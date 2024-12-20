@@ -8,7 +8,6 @@ class QListFiles;
 
 struct VideoFile
 {
-	QImage preview;
 	QString filePath;
 	QString title;
 	QString resolution;
@@ -17,8 +16,15 @@ struct VideoFile
 	QString videoBitRate;
 	QString fileSize;
 	QString fps;
+	QString deepView;
+	QString hashVideo;
+
+	std::vector<uint8_t> data_img;
+	int width;
+	int height;
 
 	QString convertToByte(uint64_t bit, bool isDecimal = false);
+	bool isEmpty() const;
 };
 
 class ExploreFilesList : public BaseDesignWindow
@@ -36,6 +42,9 @@ protected:
 	QListView* listView;
 	QListFiles* filesList;
 	MediaPlayer* mediaPlayer;
+
+private:
+	QString getDeepViewFromJson(const QString& hash);
 };
 
 class QFilesItemDelegate : public QStyledItemDelegate
@@ -60,9 +69,9 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
-	void addVideoFile(const std::string& video);
+	void addVideoFile(const VideoFile& video);
 	Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
-	std::vector<std::string> videoFiles;
+	std::vector<VideoFile> videoFiles;
 };

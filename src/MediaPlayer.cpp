@@ -35,21 +35,58 @@ MediaPlayer::MediaPlayer(QWidget* parent)
 
 MediaPlayer::~MediaPlayer()
 {
+    QFile videos(APP_DIR + "/videos.json");
+    videos.open(QIODevice::ReadWrite | QIODevice::Text);
+
+    std::string json_str = videos.readAll().toStdString();
+    rapidjson::Document videos_json;
+
+    videos_json.Parse(json_str.c_str());
+
+    for (auto& video : videos_json["videos"].GetArray())
+    {
+        if (video["hash_md5"].GetString() == this->hash_video.toStdString())
+        {
+            video["viewed_duration"].SetInt(videoPlayer->ui->player->position());
+            
+            rapidjson::StringBuffer buffer;
+            rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+            videos_json.Accept(writer);
+
+            videos.resize(0);
+            videos.write(buffer.GetString(), static_cast<qint64>(buffer.GetSize()));
+            videos.close();
+        }
+    }
+
 	delete videoPlayer;
 }
 
-void MediaPlayer::openVideo(QString FileName) const
+void MediaPlayer::openVideo(QString fileName, QString hash, int deepview)
 {
+    this->hash_video = hash;
     auto ui = videoPlayer->ui;
 
     ui->video->setGeometry(0, 0, ui->videoPlayer->width(), ui->videoPlayer->height() - ui->videoBar->height() - 10);
     ui->video->setParent(ui->videoPlayer);
 
-    ui->player->setSource(QUrl(FileName));
+    ui->player->setSource(QUrl(fileName));
     ui->sliderDurationVideo->setRange(0, ui->player->duration() / 100);
 
     ui->video->setVisible(true);
     ui->video->show();
+
+    connect(ui->player, &QMediaPlayer::mediaStatusChanged, this, [ui, deepview](QMediaPlayer::MediaStatus status)
+    {
+        if (status == QMediaPlayer::LoadedMedia) //catch event load media (once)
+        {
+            ui->player->setPosition(static_cast<qint64>(deepview));
+            ui->player->play();
+
+            QObject::disconnect(ui->player, &QMediaPlayer::mediaStatusChanged, nullptr, nullptr);
+        }
+    });
+
     ui->player->play();
 }
 
@@ -69,7 +106,7 @@ void MediaPlayer::on_exploreFilesButton_click()
             QString settings_dir = QFileDialog::getExistingDirectory(this, "Choose folder", APP_DIR,
                 QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-            rapidjson::Document settings_json;
+            //rapidjson::Document settings_json;
             settings_json.SetObject();
             auto& alloc = settings_json.GetAllocator();
             std::string pathStdString = settings_dir.toStdString(); // fix dagling

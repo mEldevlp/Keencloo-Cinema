@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 
 #pragma region("STD")
 #include <iostream>
@@ -33,11 +34,13 @@ extern "C" {
 }
 
 #include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
 #include <rapidjson/writer.h>
-#include <rapidjson/stringbuffer.h>
+#include <rapidjson/prettywriter.h>
 #pragma endregion
 
-#define VERSION "0.16.0"
+#define VERSION "0.18.0"
 
 #define KEENCLOO_DEBUG
 

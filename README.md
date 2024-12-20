@@ -71,8 +71,8 @@ Keencloo-Cinema\build\Release\videos\
 - [x] There should be a logo in the middle of the window
 - [x] Select the window color palette (#27c4c3, #ff2e2e, #990012, rgb: 192, 192, 192)
 - [x] To develop own video widget
-- [ ] Should remember the length of the viewed video, i.e. store the current viewing time somewhere
-- [ ] When closing, remember in the paragraph above
+- [x] Should remember the length of the viewed video, i.e. store the current viewing time somewhere
+- [x] When closing, remember in the paragraph above
 - [x] Full screen capability
 - [x] Volume control
 - [x] Pause/Playback

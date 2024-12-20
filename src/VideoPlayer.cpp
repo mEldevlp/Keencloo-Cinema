@@ -151,13 +151,13 @@ void VideoPlayer::on_fullscreenButton_clicked()
 			ui->fullscreenButton->setIcon(QIcon(path + "screenminimaze.ico"));
 			ui->video->setFullScreen(true);
 
-			// gradient bg
+			// Gradient bg
 			ui->videoBar->setStyleSheet("#videoBar { background-color: qlineargradient(spread : pad, x1 : 0,"
 				"y1 : 1, x2 : 0, y2 : 0, stop : 0 rgba(0, 0, 0, 255), stop : 1 rgba(0, 0, 0, 0));"
 				"border: none; } #label_videobar{color: white; font-size: 16px;}");
 			
 			// Move videBar on QVideoWidget
-			ui->videoBar->setParent(nullptr); // remove parent
+			ui->videoBar->setParent(nullptr); // remove parent for separate window
 			ui->videoBar->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
 			// Shows videbar on video

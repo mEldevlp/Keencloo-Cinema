@@ -127,8 +127,8 @@ MetaDataVideo extract_video_metadata(const char* file)
                     metadata.frame_data.resolution.width = codecContext->width;
                     metadata.frame_data.resolution.height = codecContext->height;
                     metadata.frame_data.channels = 3; // RGB
-
                     metadata.frame_data.data = buffer;
+
                     break;
                 }
             }

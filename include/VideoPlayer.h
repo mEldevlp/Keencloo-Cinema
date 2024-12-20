@@ -54,6 +54,7 @@ protected:
 
 	VideoPlayerUI* ui;
 	int64_t duration = 0ll;
+	int64_t currentPos = 0ll;
 	bool is_paused = false;
 	bool is_muted = false;
 	int64_t last_position = -1;
