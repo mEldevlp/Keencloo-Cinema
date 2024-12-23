@@ -96,9 +96,6 @@ VideoPlayer::VideoPlayer(QWidget* parent)
 	connect(ui->sliderDurationVideo, &QSlider::valueChanged, this, &VideoPlayer::on_sliderDurationVideo_valueChanged);
 	connect(ui->volumeSlider, &QSlider::valueChanged, this, &VideoPlayer::on_volumeSlider_valueChanged);
 
-	//ui->volumeButton->installEventFilter(this);
-	//ui->stopPlayButton->installEventFilter(this);
-	//ui->fullscreenButton->installEventFilter(this);
 	ui->video->installEventFilter(this);
 	ui->video->setAttribute(Qt::WA_Hover);
 

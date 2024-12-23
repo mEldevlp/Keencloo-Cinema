@@ -150,6 +150,9 @@ if(WIN32)
         "${CMAKE_SOURCE_DIR}/rsc/volume_down.ico"
         "${CMAKE_SOURCE_DIR}/rsc/volume_off.ico"
         "${CMAKE_SOURCE_DIR}/rsc/volume_up.ico"
+		"${CMAKE_SOURCE_DIR}/rsc/folder.ico"
+		"${CMAKE_SOURCE_DIR}/rsc/qt_logo.png"
+		"${CMAKE_SOURCE_DIR}/rsc/github_logo.png"
     )
 	
     set(FULLSCREEN_FILES

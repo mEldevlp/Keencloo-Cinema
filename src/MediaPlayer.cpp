@@ -31,6 +31,7 @@ MediaPlayer::MediaPlayer(QWidget* parent)
     });
 
     connect(exploreFilesButton, &QPushButton::clicked, this, &MediaPlayer::on_exploreFilesButton_click);
+    connect(settingsButton, &QPushButton::clicked, this, &MediaPlayer::on_settingsButton_click);
 }
 
 MediaPlayer::~MediaPlayer()
@@ -90,6 +91,20 @@ void MediaPlayer::openVideo(QString fileName, QString hash, int deepview)
     ui->player->play();
 }
 
+void MediaPlayer::on_settingsButton_click()
+{
+    // Get center parent
+    QPoint center = this->geometry().center();
+
+    settingsWindow = new SettingsWindow(this);
+    settingsWindow->setObjectName("ExploreFilesList");
+
+    settingsWindow->show();
+
+    // Move new window to center of parent
+    settingsWindow->move(center - QPoint(settingsWindow->width() / 2, settingsWindow->height() / 2));
+}
+
 void MediaPlayer::on_exploreFilesButton_click()
 {
     QFile settings(APP_DIR + "/settings.json");
@@ -106,7 +121,9 @@ void MediaPlayer::on_exploreFilesButton_click()
             QString settings_dir = QFileDialog::getExistingDirectory(this, "Choose folder", APP_DIR,
                 QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-            //rapidjson::Document settings_json;
+            if (settings_dir.isEmpty())
+                settings_dir = videos_folder_path.c_str();
+
             settings_json.SetObject();
             auto& alloc = settings_json.GetAllocator();
             std::string pathStdString = settings_dir.toStdString(); // fix dagling

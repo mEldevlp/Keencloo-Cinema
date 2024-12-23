@@ -40,7 +40,7 @@ extern "C" {
 #include <rapidjson/prettywriter.h>
 #pragma endregion
 
-#define VERSION "0.18.0"
+#define VERSION "1.0.0"
 
 #define KEENCLOO_DEBUG
 

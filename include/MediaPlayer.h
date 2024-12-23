@@ -3,6 +3,7 @@
 #include "BaseDesignWindow.h"
 #include "VideoPlayer.h"
 #include "ExploreFilesList.h"
+#include "SettingsWindow.h"
 
 class MediaPlayer : public BaseDesignWindow
 {
@@ -18,9 +19,11 @@ public:
 
 private slots:
 	void on_exploreFilesButton_click();
+	void on_settingsButton_click();
 
 protected:
 	ExploreFilesList* exploreFilesList = nullptr;
+	SettingsWindow* settingsWindow = nullptr;
 	
 public:
 	VideoPlayer* videoPlayer = nullptr;

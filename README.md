@@ -1,15 +1,15 @@
 <div align="center">
 <h3><img src="rsc/logo_git.png" alt="logo" width="275"></h3>
 </div>
-WIP
-
 Simplify the lives of movie fans
 
 ### Screenshots
 <details>
   <summary>View screens</summary>
-  <img src="https://i.imgur.com/0Pcatmq.png" alt="first screen" width="700"/>
-  <img src="https://i.imgur.com/RmBgDe5.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/4ovYbzk.png" alt="first screen" width="700"/>
+  <img src="https://i.imgur.com/ID9mOEy.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/zs4hfSc.png" alt="second screen" width="400"/>
+  <img src="https://i.imgur.com/pkywbwe.png" alt="second screen" width="400"/>
 </details>
 
 ### Technologies
@@ -65,28 +65,11 @@ cmake --build build --config RelWithDebInfo # or Release
 ```
 Keencloo-Cinema\build\Release\videos\
 ```
-## Features
-- [x] The close, minimize, and full screen buttons are in the upper right corner
-- [x] The "close" button should be red when pointing
-- [x] There should be a logo in the middle of the window
-- [x] Select the window color palette (#27c4c3, #ff2e2e, #990012, rgb: 192, 192, 192)
-- [x] To develop own video widget
-- [x] Should remember the length of the viewed video, i.e. store the current viewing time somewhere
-- [x] When closing, remember in the paragraph above
-- [x] Full screen capability
-- [x] Volume control
-- [x] Pause/Playback
-- [x] The video bar should be on top of the video
-- [x] After watching 3 seconds of the video, then the video bar is hidden
-- [x] When moving the mouse while watching a video (the focus should be in the window), the video bar is displayed
-- [x] Customize the video bar
-- [x] Run through a list and an abstract model
+## TODO
+
 - [ ] There should be a video file name, the length of the video, and how much has already been watched, if not watched, then do not show it or highlight it separately somehow
-- [x] Hover effects at icons in main window
-- [x] Hover effects when pointing at elements
-- [x] When clicked, this video opens
-- [ ] Settings window
 - [ ] Drag and drop video in video player
 - [ ] In 'ExploreFilesList' make search(text) & sort
-
-and more..
+- [ ] Minor bug fixes
+- [ ] Improve UI
+- [ ] In context menu (rmb) on file - Open via "Keencloo-Cinema"
